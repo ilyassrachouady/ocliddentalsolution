@@ -41,11 +41,5 @@
         }
       ]
     }
-  ],
-  "functions": {
-    "src/api/**/*.ts": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "regions": ["fra1", "cdg1"]
+  ]
 }
