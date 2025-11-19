@@ -2,6 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  /* Base font size */
+  font-size: 100%;
+}
+
+/* For smaller laptop screens */
+@media (max-width: 1536px) {
+  html {
+    font-size: 90%;
+  }
+}
+
+/* For even smaller laptop screens */
+@media (max-width: 1440px) {
+  html {
+    font-size: 85%;
+  }
+}
+
 :root {
   font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
