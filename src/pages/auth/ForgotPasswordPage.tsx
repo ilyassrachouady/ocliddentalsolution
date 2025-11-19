@@ -26,91 +26,94 @@ export default function ForgotPasswordPage() {
 
   if (sent) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-teal-50 p-4">
-        <div className="w-full max-w-md">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-teal-600 rounded-2xl mb-4">
-              <Sparkles className="w-8 h-8 text-white" />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-teal-50/20">
+        <div className="container mx-auto flex min-h-screen items-center justify-center p-4 sm:p-6 lg:p-8">
+          <div className="w-full max-w-md">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-teal-600 rounded-2xl mb-4">
+                <Sparkles className="w-8 h-8 text-white" />
+              </div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Ocliq</h1>
             </div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">DentalFlow</h1>
-          </div>
 
-          <Card className="shadow-xl border-0">
-            <CardHeader className="space-y-1 text-center">
-              <CardTitle className="text-2xl font-semibold">Email envoyé</CardTitle>
-              <CardDescription>
-                Nous avons envoyé un lien de réinitialisation à {email}
-              </CardDescription>
-            </CardHeader>
-            <CardFooter>
-              <Link to="/login" className="w-full">
-                <Button className="w-full rounded-xl bg-blue-600 hover:bg-blue-700">
-                  <ArrowLeft className="mr-2 h-4 w-4" />
-                  Retour à la connexion
-                </Button>
-              </Link>
-            </CardFooter>
-          </Card>
+            <Card className="shadow-xl border-0">
+              <CardHeader className="space-y-1 text-center">
+                <CardTitle className="text-2xl font-semibold">Email envoyé</CardTitle>
+                <CardDescription>
+                  Nous avons envoyé un lien de réinitialisation à {email}
+                </CardDescription>
+              </CardHeader>
+              <CardFooter>
+                <Link to="/login" className="w-full">
+                  <Button className="w-full rounded-xl bg-blue-600 hover:bg-blue-700">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Retour à la connexion
+                  </Button>
+                </Link>
+              </CardFooter>
+            </Card>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-teal-50 p-4">
-      <div className="w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-teal-600 rounded-2xl mb-4">
-            <Sparkles className="w-8 h-8 text-white" />
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-teal-50/20">
+      <div className="container mx-auto flex min-h-screen items-center justify-center p-4 sm:p-6 lg:p-8">
+        <div className="w-full max-w-md">
+          <div className="text-center mb-8">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-teal-600 rounded-2xl mb-4">
+              <Sparkles className="w-8 h-8 text-white" />
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Ocliq</h1>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">DentalFlow</h1>
-        </div>
 
-        <Card className="shadow-xl border-0">
-          <CardHeader className="space-y-1">
-            <CardTitle className="text-2xl font-semibold">Mot de passe oublié</CardTitle>
-            <CardDescription>
-              Entrez votre email pour recevoir un lien de réinitialisation
-            </CardDescription>
-          </CardHeader>
-          <form onSubmit={handleSubmit}>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="votre@email.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10 rounded-xl"
-                    required
-                  />
+          <Card className="shadow-xl border-0">
+            <CardHeader className="space-y-1">
+              <CardTitle className="text-2xl font-semibold">Mot de passe oublié</CardTitle>
+              <CardDescription>
+                Entrez votre email pour recevoir un lien de réinitialisation
+              </CardDescription>
+            </CardHeader>
+            <form onSubmit={handleSubmit}>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email</Label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="votre@email.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="pl-10 rounded-xl"
+                      required
+                    />
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex flex-col space-y-4">
-              <Button
-                type="submit"
-                className="w-full rounded-xl bg-blue-600 hover:bg-blue-700"
-                disabled={isLoading}
-              >
-                {isLoading ? 'Envoi...' : 'Envoyer le lien'}
-              </Button>
-              <Link
-                to="/login"
-                className="text-sm text-center text-blue-600 hover:underline"
-              >
-                <ArrowLeft className="inline mr-1 h-3 w-3" />
-                Retour à la connexion
-              </Link>
-            </CardFooter>
-          </form>
-        </Card>
+              </CardContent>
+              <CardFooter className="flex flex-col space-y-4">
+                <Button
+                  type="submit"
+                  className="w-full rounded-xl bg-blue-600 hover:bg-blue-700"
+                  disabled={isLoading}
+                >
+                  {isLoading ? 'Envoi...' : 'Envoyer le lien'}
+                </Button>
+                <Link
+                  to="/login"
+                  className="text-sm text-center text-blue-600 hover:underline"
+                >
+                  <ArrowLeft className="inline mr-1 h-3 w-3" />
+                  Retour à la connexion
+                </Link>
+              </CardFooter>
+            </form>
+          </Card>
+        </div>
       </div>
     </div>
   );
 }
-

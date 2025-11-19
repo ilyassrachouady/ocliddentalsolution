@@ -233,7 +233,7 @@ export default function BillingPage() {
   };
 
   return (
-    <div className="space-y-6 p-4 bg-gradient-to-br from-slate-50 via-blue-50/30 to-teal-50/20 min-h-screen">
+    <div className="space-y-6">
       {/* Hero Header */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 rounded-3xl opacity-95"></div>
@@ -259,10 +259,6 @@ export default function BillingPage() {
                 <div className="flex items-center gap-2">
                   <Receipt className="h-5 w-5 text-green-300" />
                   <span className="font-medium">Facturation automatique</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-blue-300" />
-                  <span className="font-medium">Assurances</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <BarChart3 className="h-5 w-5 text-purple-300" />
@@ -296,12 +292,12 @@ export default function BillingPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-green-50/50 hover:shadow-xl transition-all duration-300">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600 font-medium mb-2">Revenus ce mois</p>
+                <p className="text-sm text-slate-600 font-medium mb-2">Revenus (Janvier)</p>
                 <p className="text-3xl font-bold text-slate-900">45 600 MAD</p>
                 <p className="text-xs text-green-600 font-medium mt-1">
                   +12% vs mois dernier
@@ -318,10 +314,10 @@ export default function BillingPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600 font-medium mb-2">Factures payées</p>
-                <p className="text-3xl font-bold text-slate-900">24/28</p>
+                <p className="text-sm text-slate-600 font-medium mb-2">Factures Payées</p>
+                <p className="text-3xl font-bold text-slate-900">24 / 28</p>
                 <p className="text-xs text-blue-600 font-medium mt-1">
-                  85% de taux de paiement
+                  Taux de paiement de 85%
                 </p>
               </div>
               <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
@@ -335,7 +331,7 @@ export default function BillingPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-slate-600 font-medium mb-2">En attente</p>
+                <p className="text-sm text-slate-600 font-medium mb-2">Montant en Attente</p>
                 <p className="text-3xl font-bold text-slate-900">8 400 MAD</p>
                 <p className="text-xs text-orange-600 font-medium mt-1">
                   4 factures impayées
@@ -347,44 +343,20 @@ export default function BillingPage() {
             </div>
           </CardContent>
         </Card>
-
-        <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-purple-50/50 hover:shadow-xl transition-all duration-300">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-slate-600 font-medium mb-2">Assurances</p>
-                <p className="text-3xl font-bold text-slate-900">12 500 MAD</p>
-                <p className="text-xs text-purple-600 font-medium mt-1">
-                  Remboursements ce mois
-                </p>
-              </div>
-              <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                <Shield className="h-7 w-7 text-white" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
 
       {/* Tabs Section */}
       <Tabs defaultValue="invoices" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-3 bg-white/90 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-slate-200/50 h-14">
-          <TabsTrigger 
-            value="invoices" 
+        <TabsList className="grid w-full grid-cols-2 bg-white/90 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-slate-200/50 h-14">
+          <TabsTrigger
+            value="invoices"
             className="rounded-xl font-bold text-base h-10 px-4 transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-slate-50 text-slate-700"
           >
             <FileText className="h-4 w-4 mr-2" />
             Factures
           </TabsTrigger>
-          <TabsTrigger 
-            value="insurance" 
-            className="rounded-xl font-bold text-base h-10 px-4 transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-slate-50 text-slate-700"
-          >
-            <Shield className="h-4 w-4 mr-2" />
-            Assurances
-          </TabsTrigger>
-          <TabsTrigger 
-            value="reports" 
+          <TabsTrigger
+            value="reports"
             className="rounded-xl font-bold text-base h-10 px-4 transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-slate-50 text-slate-700"
           >
             <BarChart3 className="h-4 w-4 mr-2" />
@@ -471,117 +443,117 @@ export default function BillingPage() {
           </Card>
         </TabsContent>
 
-        {/* Insurance Tab */}
-        <TabsContent value="insurance" className="space-y-6">
-          <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-6">
-              <CardTitle className="text-2xl font-bold text-slate-900 flex items-center gap-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl flex items-center justify-center">
-                  <Shield className="h-5 w-5 text-white" />
-                </div>
-                Assurances & Remboursements
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="space-y-4">
-                {insurance.map((ins) => (
-                  <Card
-                    key={ins.id}
-                    className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden group bg-gradient-to-r from-white to-purple-50/30"
-                  >
-                    <CardContent className="p-6">
-                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                        <div className="flex-1">
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            <div>
-                              <p className="text-sm text-slate-600 font-medium">Assureur</p>
-                              <p className="font-bold text-slate-900">{ins.provider}</p>
-                            </div>
-                            <div>
-                              <p className="text-sm text-slate-600 font-medium">Police N°</p>
-                              <p className="font-bold text-slate-900">{ins.policyNumber}</p>
-                            </div>
-                            <div>
-                              <p className="text-sm text-slate-600 font-medium">Couverture</p>
-                              <p className="font-bold text-slate-900">{ins.coverage}%</p>
-                            </div>
-                            <div>
-                              <p className="text-sm text-slate-600 font-medium">Plafond</p>
-                              <p className="font-bold text-slate-900">{ins.maxAmount} MAD</p>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="flex gap-2">
-                          <Button size="sm" variant="outline" className="rounded-2xl">
-                            <Calculator className="h-4 w-4 mr-2" />
-                            Calculer
-                          </Button>
-                          <Button size="sm" className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 rounded-2xl">
-                            <Send className="h-4 w-4 mr-2" />
-                            Demande
-                          </Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
         {/* Reports Tab */}
-        <TabsContent value="reports" className="space-y-6">
+        <TabsContent value="reports" className="space-y-4">
           <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
             <CardHeader className="bg-gradient-to-r from-slate-50 via-orange-50/30 to-yellow-50/20 p-6">
-              <CardTitle className="text-2xl font-bold text-slate-900 flex items-center gap-3">
-                <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-yellow-600 rounded-xl flex items-center justify-center">
-                  <BarChart3 className="h-5 w-5 text-white" />
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                  <CardTitle className="text-2xl font-bold text-slate-900 flex items-center gap-3">
+                    <div className="w-8 h-8 bg-gradient-to-br from-orange-500 to-yellow-600 rounded-xl flex items-center justify-center">
+                      <BarChart3 className="h-5 w-5 text-white" />
+                    </div>
+                    Rapports Financiers
+                  </CardTitle>
+                  <CardDescription className="mt-2 text-slate-600 text-lg">
+                    Aperçu détaillé des performances financières.
+                  </CardDescription>
                 </div>
-                Rapports financiers
-              </CardTitle>
+                <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+                  <SelectTrigger className="w-full sm:w-[180px] rounded-2xl h-12 text-base">
+                    <SelectValue placeholder="Choisir période" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="week">Semaine</SelectItem>
+                    <SelectItem value="month">Mois</SelectItem>
+                    <SelectItem value="year">Année</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </CardHeader>
             <CardContent className="p-6">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {reports.map((report, index) => (
-                  <Card
-                    key={index}
-                    className="border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30 rounded-2xl p-6"
-                  >
-                    <div className="space-y-4">
-                      <h3 className="text-xl font-bold text-slate-900">{report.period}</h3>
-                      
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="text-center p-4 bg-green-50 rounded-xl">
-                          <p className="text-sm text-slate-600 font-medium">Revenus</p>
-                          <p className="text-2xl font-bold text-green-600">{report.revenue.toLocaleString()} MAD</p>
+              {reports.map((report, index) => (
+                <div key={index} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  {/* Left Column: Key Metrics */}
+                  <div className="lg:col-span-1 space-y-6">
+                    <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-blue-50/30 rounded-2xl">
+                      <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-lg font-bold">Bénéfice Net</CardTitle>
+                        <DollarSign className="h-5 w-5 text-blue-500" />
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-4xl font-bold text-blue-600">
+                          {report.profit.toLocaleString()} MAD
+                        </p>
+                        <p className="text-sm text-slate-500 mt-1">
+                          {report.period}
+                        </p>
+                      </CardContent>
+                    </Card>
+                    <Card className="border-0 shadow-lg bg-white rounded-2xl">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <span className="font-semibold text-slate-700">Revenus</span>
+                          <span className="font-bold text-green-600">
+                            {report.revenue.toLocaleString()} MAD
+                          </span>
                         </div>
-                        <div className="text-center p-4 bg-red-50 rounded-xl">
-                          <p className="text-sm text-slate-600 font-medium">Dépenses</p>
-                          <p className="text-2xl font-bold text-red-600">{report.expenses.toLocaleString()} MAD</p>
+                        <hr className="my-3" />
+                        <div className="flex items-center justify-between">
+                          <span className="font-semibold text-slate-700">Dépenses</span>
+                          <span className="font-bold text-red-600">
+                            {report.expenses.toLocaleString()} MAD
+                          </span>
                         </div>
-                      </div>
-                      
-                      <div className="text-center p-4 bg-blue-50 rounded-xl">
-                        <p className="text-sm text-slate-600 font-medium">Bénéfice net</p>
-                        <p className="text-3xl font-bold text-blue-600">{report.profit.toLocaleString()} MAD</p>
-                      </div>
-                      
-                      <div className="grid grid-cols-2 gap-4 text-sm">
-                        <div>
-                          <p className="text-slate-600">Factures émises</p>
-                          <p className="font-bold text-slate-900">{report.invoiceCount}</p>
-                        </div>
-                        <div>
-                          <p className="text-slate-600">Factures payées</p>
-                          <p className="font-bold text-slate-900">{report.paidInvoices}</p>
-                        </div>
-                      </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Right Column: Details */}
+                  <div className="lg:col-span-2 space-y-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                      <Card className="border-0 shadow-lg bg-white rounded-2xl">
+                        <CardHeader className="flex flex-row items-center justify-between pb-2">
+                          <CardTitle className="text-base font-bold">Factures</CardTitle>
+                          <FileText className="h-4 w-4 text-slate-500" />
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-2xl font-bold">{report.invoiceCount} émises</p>
+                          <p className="text-sm text-slate-500">
+                            {report.paidInvoices} payées
+                          </p>
+                        </CardContent>
+                      </Card>
+                      <Card className="border-0 shadow-lg bg-white rounded-2xl">
+                        <CardHeader className="flex flex-row items-center justify-between pb-2">
+                          <CardTitle className="text-base font-bold">Montant en Attente</CardTitle>
+                          <Clock className="h-4 w-4 text-slate-500" />
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-2xl font-bold">
+                            {report.pendingAmount.toLocaleString()} MAD
+                          </p>
+                          <p className="text-sm text-slate-500">
+                            {report.invoiceCount - report.paidInvoices} factures
+                          </p>
+                        </CardContent>
+                      </Card>
                     </div>
-                  </Card>
-                ))}
-              </div>
+                    <Card className="border-0 shadow-lg bg-white rounded-2xl">
+                      <CardHeader>
+                        <CardTitle className="text-base font-bold">Répartition des revenus</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        {/* Placeholder for a chart */}
+                        <div className="h-48 flex items-center justify-center bg-slate-50 rounded-xl">
+                          <BarChart3 className="h-12 w-12 text-slate-300" />
+                          <span className="ml-4 text-slate-400">Graphique à venir</span>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </div>
+              ))}
             </CardContent>
           </Card>
         </TabsContent>

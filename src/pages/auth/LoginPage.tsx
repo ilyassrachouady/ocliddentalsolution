@@ -53,7 +53,7 @@ export default function LoginPage() {
       <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-teal-500/10 to-blue-500/10 rounded-full -translate-y-48 translate-x-48"></div>
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-gradient-to-tr from-blue-500/10 to-teal-500/10 rounded-full translate-y-40 -translate-x-40"></div>
       
-      <div className="relative flex items-center justify-center min-h-screen p-4">
+      <div className="container mx-auto flex min-h-screen items-center justify-center p-4 sm:p-6 lg:p-8">
         <div className="w-full max-w-md">
           {/* Compact Brand Header */}
           <div className="text-center mb-6">
@@ -65,7 +65,7 @@ export default function LoginPage() {
                 <Heart className="w-2.5 h-2.5 text-white" />
               </div>
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent mb-2">DentalFlow</h1>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent mb-2">Ocliq</h1>
             <p className="text-slate-600 font-medium">Gestion dentaire professionnelle</p>
             <div className="flex items-center justify-center gap-4 mt-3 text-slate-500">
               <div className="flex items-center gap-1.5">

@@ -142,8 +142,8 @@ export default function BookingPage() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 px-4">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-slate-50">
+      <div className="max-w-screen-2xl mx-auto p-4 md:p-6 lg:p-8">
         {/* PREMIUM DENTIST HERO CARD */}
         <div className="relative mb-8 overflow-hidden rounded-3xl shadow-2xl border-0">
           {/* Animated background gradient */}

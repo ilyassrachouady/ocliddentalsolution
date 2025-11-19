@@ -75,7 +75,7 @@ export default function PatientsPage() {
   };
 
   return (
-    <div className="space-y-6 p-4 bg-gradient-to-br from-slate-50 via-blue-50/30 to-teal-50/20 min-h-screen">
+    <div className="space-y-6">
       {/* Hero Header */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 rounded-3xl opacity-95"></div>
