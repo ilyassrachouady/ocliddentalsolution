@@ -60,7 +60,7 @@ export default function DashboardLayout() {
               <Stethoscope className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">DentalFlow</h1>
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">Ocliq</h1>
               {isDemo && (
                 <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold rounded-full mt-1">
                   Mode démo
@@ -156,7 +156,7 @@ export default function DashboardLayout() {
                 <Stethoscope className="h-6 w-6 text-white" />
               </div>
               <div>
-                <h1 className="text-xl font-bold text-gray-900">DentalFlow</h1>
+                <h1 className="text-xl font-bold text-gray-900">Ocliq</h1>
                 {isDemo && (
                   <Badge variant="secondary" className="text-xs">
                     Mode démo
@@ -240,7 +240,7 @@ export default function DashboardLayout() {
 
       {/* Main Content */}
       <main className="lg:pl-80">
-        <div className="px-4 py-4 sm:px-6 lg:px-8 xl:px-12">
+        <div className="max-w-screen-2xl mx-auto p-4 md:p-6 lg:p-8">
           <Outlet />
         </div>
       </main>
