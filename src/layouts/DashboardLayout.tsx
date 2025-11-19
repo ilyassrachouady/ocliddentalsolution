@@ -25,8 +25,6 @@ import {
   Menu,
   LogOut,
   Stethoscope,
-  Activity,
-  BarChart3,
   CreditCard,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -240,7 +238,7 @@ export default function DashboardLayout() {
 
       {/* Main Content */}
       <main className="lg:pl-80">
-        <div className="max-w-screen-2xl mx-auto p-4 md:p-6 lg:p-8">
+        <div className="max-w-screen-2xl mx-auto p-4 sm:p-6 md:p-8 lg:p-10">
           <Outlet />
         </div>
       </main>

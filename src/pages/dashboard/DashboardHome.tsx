@@ -26,9 +26,6 @@ import {
   DollarSign,
   ArrowUpRight,
   Eye,
-  User,
-  Phone,
-  Mail,
   Stethoscope,
   Activity,
   CheckCircle2,
@@ -38,7 +35,6 @@ import {
   Heart,
   Shield,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import QuizStyleBooking from '@/components/ui/quiz-style-booking';
 
 export default function DashboardHome() {
@@ -69,24 +65,20 @@ export default function DashboardHome() {
       ]);
       setPatients(patientsData);
       
-      // Process today's appointments
       const today = new Date();
       const todayAppts = apptsData.filter((apt: Appointment) => isToday(new Date(apt.date)));
       setTodayAppointments(todayAppts);
       
-      // Process upcoming appointments (next 7 days)
       const upcomingAppts = apptsData.filter((apt: Appointment) => {
         const aptDate = new Date(apt.date);
         return aptDate > today && aptDate <= addDays(today, 7);
       });
       setUpcomingAppointments(upcomingAppts);
       
-      // Calculate monthly stats
       const thisMonthAppts = apptsData.filter((apt: Appointment) => isThisMonth(new Date(apt.date)));
       const completedThisMonth = thisMonthAppts.filter((apt: Appointment) => apt.status === 'completed');
       const newPatientsThisMonth = patientsData.filter((patient: Patient) => isThisMonth(new Date(patient.createdAt || new Date())));
       
-      // Calculate revenue (mock calculation based on services)
       const revenue = completedThisMonth.reduce((total: number, apt: Appointment) => {
         const service = dentist.services?.find((s: any) => s.id === apt.serviceId);
         return total + (service?.price || 0);
@@ -113,12 +105,10 @@ export default function DashboardHome() {
     return 'Bonsoir';
   };
 
-
   const getPatientName = (patientId: string) => {
     const patient = patients.find(p => p.id === patientId);
     return patient?.name || patientId;
   };
-
 
   const getStatusBadge = (status: string) => {
     const statusConfig: Record<string, { icon: React.ReactNode; label: string; className: string }> = {
@@ -158,22 +148,20 @@ export default function DashboardHome() {
 
   if (isLoading) {
     return (
-      <div className="p-6 bg-gradient-to-br from-slate-50 via-blue-50/30 to-teal-50/20 min-h-screen">
-        <div className="flex items-center justify-center h-64">
-          <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-teal-100 rounded-full flex items-center justify-center animate-pulse">
-            <Activity className="h-8 w-8 text-blue-600 animate-spin" />
-          </div>
+      <div className="flex items-center justify-center h-full">
+        <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-teal-100 rounded-full flex items-center justify-center animate-pulse">
+          <Activity className="h-8 w-8 text-blue-600 animate-spin" />
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Hero Header */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 rounded-3xl opacity-95"></div>
-        <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl p-6 text-white overflow-hidden">
+        <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl p-8 text-white overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-white/5 to-transparent rounded-full translate-y-24 -translate-x-24"></div>
           
@@ -238,12 +226,12 @@ export default function DashboardHome() {
       </div>
 
       {/* Beautiful Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         <Card 
           className="border-0 shadow-lg bg-gradient-to-br from-white to-blue-50/50 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105"
           onClick={() => navigate('/dashboard/appointments')}
         >
-          <CardContent className="p-6">
+          <CardContent className="p-8">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 font-medium mb-2">Rendez-vous</p>
@@ -272,7 +260,7 @@ export default function DashboardHome() {
           className="border-0 shadow-lg bg-gradient-to-br from-white to-teal-50/50 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105"
           onClick={() => navigate('/dashboard/patients')}
         >
-          <CardContent className="p-6">
+          <CardContent className="p-8">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 font-medium mb-2">Patients actifs</p>
@@ -300,7 +288,7 @@ export default function DashboardHome() {
         </Card>
 
         <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-green-50/50 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105">
-          <CardContent className="p-6">
+          <CardContent className="p-8">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 font-medium mb-2">Revenus</p>
@@ -319,7 +307,7 @@ export default function DashboardHome() {
         </Card>
 
         <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-purple-50/50 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105">
-          <CardContent className="p-6">
+          <CardContent className="p-8">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 font-medium mb-2">Taux succès</p>
@@ -341,11 +329,11 @@ export default function DashboardHome() {
       </div>
 
       {/* Modern Content Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
         {/* Today's Schedule */}
-        <div className="xl:col-span-8">
+        <div className="xl:col-span-2">
           <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-5 border-b-0">
+            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-6 md:p-8 border-b-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-blue-600 rounded-2xl flex items-center justify-center">
@@ -367,7 +355,7 @@ export default function DashboardHome() {
                 </Button>
               </div>
             </CardHeader>
-            <CardContent className="p-5">
+            <CardContent className="p-6 md:p-8">
               {todayAppointments.length === 0 ? (
                 <div className="text-center py-10">
                   <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-teal-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
@@ -384,7 +372,7 @@ export default function DashboardHome() {
                   </Button>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {todayAppointments.map((appointment) => {
                     const patient = patients.find(p => p.id === appointment.patientId);
                     const service = dentist?.services?.find((s: any) => s.id === appointment.serviceId);
@@ -439,10 +427,10 @@ export default function DashboardHome() {
         </div>
 
         {/* Modern Sidebar */}
-        <div className="xl:col-span-4 space-y-5">
+        <div className="xl:col-span-1 space-y-8">
           {/* Quick Actions */}
           <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-purple-50/30 to-pink-50/20 p-4 border-b-0">
+            <CardHeader className="bg-gradient-to-r from-slate-50 via-purple-50/30 to-pink-50/20 p-6 border-b-0">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center">
                   <Activity className="w-5 h-5 text-white" />
@@ -450,7 +438,7 @@ export default function DashboardHome() {
                 <CardTitle className="text-xl font-bold text-slate-900">Actions rapides</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="p-4 space-y-2">
+            <CardContent className="p-6 space-y-3">
               <Button
                 onClick={() => navigate('/dashboard/patients')}
                 className="w-full justify-start h-10 bg-gradient-to-r from-teal-50 to-blue-50 hover:from-teal-100 hover:to-blue-100 text-slate-700 border-0 rounded-2xl font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl"
@@ -503,7 +491,7 @@ export default function DashboardHome() {
                   <p className="text-sm text-slate-500 mt-1">Planifiez de nouveaux rendez-vous</p>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {upcomingAppointments.slice(0, 4).map((appointment) => {
                     const patient = patients.find(p => p.id === appointment.patientId);
                     return (
@@ -539,4 +527,3 @@ export default function DashboardHome() {
     </div>
   );
 }
-
