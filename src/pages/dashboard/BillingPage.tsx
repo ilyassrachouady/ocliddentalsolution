@@ -236,33 +236,33 @@ export default function BillingPage() {
     <div className="space-y-6">
       {/* Hero Header */}
       <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 rounded-3xl opacity-95"></div>
-        <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl p-6 text-white overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-white/5 to-transparent rounded-full translate-y-24 -translate-x-24"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 rounded-xl md:rounded-2xl opacity-95"></div>
+        <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl md:rounded-2xl p-3 md:p-5 lg:p-7 text-white overflow-hidden">
+          <div className="absolute top-0 right-0 w-40 h-40 md:w-56 md:h-56 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-20 md:-translate-y-28 translate-x-20 md:translate-x-28"></div>
+          <div className="absolute bottom-0 left-0 w-32 h-32 md:w-40 md:h-40 bg-gradient-to-tr from-white/5 to-transparent rounded-full translate-y-16 md:translate-y-20 -translate-x-16 md:-translate-x-20"></div>
           
-          <div className="relative flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-            <div className="space-y-3">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                  <CreditCard className="h-6 w-6 text-white" />
+          <div className="relative flex flex-col lg:flex-row justify-between items-start lg:items-center gap-2.5 md:gap-5">
+            <div className="space-y-1.5 md:space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:gap-3">
+                <div className="w-10 h-10 md:w-14 md:h-14 bg-white/20 backdrop-blur-sm rounded-lg md:rounded-xl flex items-center justify-center">
+                  <CreditCard className="h-5 w-5 md:h-7 md:w-7 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-4xl font-bold tracking-tight">Facturation & Finance</h1>
-                  <p className="text-blue-100 mt-1 text-lg">
+                  <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold tracking-tight">Facturation & Finance</h1>
+                  <p className="text-blue-100 mt-0.5 md:mt-1 text-xs sm:text-sm lg:text-base xl:text-lg font-medium">
                     Gestion complète de la facturation et des finances
                   </p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-6 text-blue-100">
-                <div className="flex items-center gap-2">
-                  <Receipt className="h-5 w-5 text-green-300" />
-                  <span className="font-medium">Facturation automatique</span>
+              <div className="flex flex-wrap items-center gap-3 md:gap-6 text-blue-100">
+                <div className="flex items-center gap-1.5 md:gap-2">
+                  <Receipt className="h-3.5 w-3.5 md:h-4 md:w-4 text-green-300" />
+                  <span className="font-medium text-xs md:text-sm">Facturation automatique</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5 text-purple-300" />
-                  <span className="font-medium">Rapports</span>
+                <div className="flex items-center gap-1.5 md:gap-2">
+                  <BarChart3 className="h-3.5 w-3.5 md:h-4 md:w-4 text-purple-300" />
+                  <span className="font-medium text-xs md:text-sm">Rapports</span>
                 </div>
               </div>
             </div>
@@ -270,12 +270,12 @@ export default function BillingPage() {
             <div className="flex items-center gap-4">
               <Dialog open={showInvoiceDialog} onOpenChange={setShowInvoiceDialog}>
                 <DialogTrigger asChild>
-                  <Button className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/30 rounded-2xl px-6 py-3 h-auto font-semibold text-lg transition-all duration-300 transform hover:scale-105">
-                    <Plus className="mr-2 h-5 w-5" />
+                  <Button className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/30 rounded-xl md:rounded-2xl px-3 py-1.5 md:px-5 md:py-2.5 h-auto font-semibold text-xs md:text-sm lg:text-base transition-all duration-300 transform hover:scale-105">
+                    <Plus className="mr-1.5 md:mr-2 h-3.5 w-3.5 md:h-4 md:w-4" />
                     Nouvelle Facture
                   </Button>
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-6xl border-0 shadow-2xl rounded-3xl p-0">
+                <DialogContent className="sm:max-w-6xl border-0 shadow-2xl rounded-xl md:rounded-2xl lg:rounded-3xl p-0">
                   <NewInvoiceForm 
                     onSuccess={(invoice) => {
                       setShowInvoiceDialog(false);

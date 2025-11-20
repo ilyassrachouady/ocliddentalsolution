@@ -51,23 +51,23 @@ export default function DashboardLayout() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/20 to-teal-50/10 animate-fade-in">
       {/* Modern Desktop Sidebar */}
-      <aside className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-80 lg:flex-col">
-        <div className="flex grow flex-col gap-y-6 overflow-y-auto bg-gradient-to-br from-white via-blue-50/30 to-teal-50/20 border-r-0 shadow-xl px-8 py-8">
-          <div className="flex h-16 shrink-0 items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-blue-600 shadow-lg">
-              <Stethoscope className="h-6 w-6 text-white" />
+      <aside className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+        <div className="flex grow flex-col gap-y-4 overflow-y-hidden bg-gradient-to-br from-white via-blue-50/30 to-teal-50/20 border-r-0 shadow-xl px-6 py-6">
+          <div className="flex h-14 shrink-0 items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-500 to-blue-600 shadow-lg">
+              <Stethoscope className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">Ocliq</h1>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-teal-600 to-blue-600 bg-clip-text text-transparent">Ocliq</h1>
               {isDemo && (
-                <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-semibold rounded-full mt-1">
+                <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white text-[10px] font-semibold rounded-full mt-1 py-0 px-2">
                   Mode démo
                 </Badge>
               )}
             </div>
           </div>
           <nav className="flex flex-1 flex-col">
-            <ul role="list" className="flex flex-1 flex-col gap-y-2">
+            <ul role="list" className="flex flex-1 flex-col gap-y-1">
               {navigation.map((item) => {
                 const isActive = location.pathname === item.href;
                 return (
@@ -75,7 +75,7 @@ export default function DashboardLayout() {
                     <Link
                       to={item.href}
                       className={cn(
-                        'group flex gap-x-3 rounded-2xl px-4 py-3 text-base font-semibold transition-all duration-300 relative overflow-hidden',
+                        'group flex gap-x-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-300 relative overflow-hidden',
                         isActive
                           ? 'bg-gradient-to-r from-teal-500 to-blue-600 text-white shadow-xl transform scale-105 border-l-4 border-white/30'
                           : 'text-slate-700 hover:text-slate-900 hover:bg-white/70 hover:shadow-lg hover:transform hover:scale-102 bg-white/50 backdrop-blur-sm border-l-4 border-transparent hover:border-teal-300'
@@ -87,22 +87,22 @@ export default function DashboardLayout() {
                       )}
                       
                       <div className={cn(
-                        'w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300',
+                        'w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-300',
                         isActive 
                           ? 'bg-white/20 backdrop-blur-sm' 
                           : 'bg-slate-100 group-hover:bg-teal-50 group-hover:scale-110'
                       )}>
                         <item.icon
                           className={cn(
-                            'h-5 w-5 shrink-0 transition-all duration-300',
+                            'h-4 w-4 shrink-0 transition-all duration-300',
                             isActive ? 'text-white' : 'text-slate-600 group-hover:text-teal-600'
                           )}
                         />
                       </div>
                       <div className="flex flex-col">
-                        <span className="font-semibold leading-tight">{item.name}</span>
+                        <span className="font-semibold leading-tight text-[13px]">{item.name}</span>
                         {isActive && (
-                          <span className="text-xs text-blue-100 font-medium">Page active</span>
+                          <span className="text-[10px] text-blue-100 font-medium">Page active</span>
                         )}
                       </div>
                     </Link>
@@ -114,25 +114,25 @@ export default function DashboardLayout() {
           <div className="border-t border-gray-200 pt-4">
             <div className="px-3 space-y-2">
               <div className="flex items-center gap-3 px-3 py-2">
-                <Avatar className="h-10 w-10">
+                <Avatar className="h-8 w-8">
                   <AvatarImage src={dentist?.photo} />
                   <AvatarFallback>
                     {dentist?.name?.charAt(0) || user?.name?.charAt(0) || 'U'}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-gray-900 truncate">
+                  <p className="text-xs font-semibold text-gray-900 truncate">
                     {dentist?.name || user?.name}
                   </p>
-                  <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                  <p className="text-[10px] text-gray-500 truncate">{user?.email}</p>
                 </div>
               </div>
               <Button
                 variant="ghost"
-                className="w-full justify-start gap-2 rounded-xl text-gray-700 hover:bg-gray-50 hover:text-gray-900"
+                className="w-full justify-start gap-2 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-gray-900 h-9 text-xs"
                 onClick={handleLogout}
               >
-                <LogOut className="h-4 w-4" />
+                <LogOut className="h-3 w-3" />
                 <span>Déconnexion</span>
               </Button>
             </div>
@@ -237,8 +237,8 @@ export default function DashboardLayout() {
       </div>
 
       {/* Main Content */}
-      <main className="lg:pl-80">
-        <div className="max-w-screen-2xl mx-auto p-4 sm:p-6 md:p-8 lg:p-10">
+      <main className="lg:pl-72">
+        <div className="max-w-screen-2xl mx-auto p-1.5 sm:p-2 md:p-3 lg:p-5">
           <Outlet />
         </div>
       </main>

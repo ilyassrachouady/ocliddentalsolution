@@ -157,47 +157,47 @@ export default function DashboardHome() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-3 md:space-y-5">
       {/* Hero Header */}
       <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 rounded-3xl opacity-95"></div>
-        <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl p-8 text-white overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-white/5 to-transparent rounded-full translate-y-24 -translate-x-24"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 rounded-xl md:rounded-2xl opacity-95"></div>
+        <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl md:rounded-2xl p-3 md:p-5 lg:p-7 text-white overflow-hidden">
+          <div className="absolute top-0 right-0 w-40 h-40 md:w-56 md:h-56 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-20 md:-translate-y-28 translate-x-20 md:translate-x-28"></div>
+          <div className="absolute bottom-0 left-0 w-28 h-28 md:w-40 md:h-40 bg-gradient-to-tr from-white/5 to-transparent rounded-full translate-y-14 md:translate-y-20 -translate-x-14 md:-translate-x-20"></div>
           
-          <div className="relative flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-            <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                  <Stethoscope className="h-8 w-8 text-white" />
+          <div className="relative flex flex-col lg:flex-row justify-between items-start lg:items-center gap-2.5 md:gap-5">
+            <div className="space-y-1.5 md:space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:gap-3">
+                <div className="w-10 h-10 md:w-14 md:h-14 bg-white/20 backdrop-blur-sm rounded-lg md:rounded-xl flex items-center justify-center">
+                  <Stethoscope className="h-5 w-5 md:h-7 md:w-7 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-3xl lg:text-4xl font-bold tracking-tight">
+                  <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold tracking-tight">
                     {getTimeOfDay()}, Dr. {dentist?.name?.split(' ')[0]}
                   </h1>
-                  <p className="text-blue-100 mt-2 text-lg lg:text-xl font-medium">
+                  <p className="text-blue-100 mt-0.5 md:mt-1 text-xs sm:text-sm lg:text-base xl:text-lg font-medium">
                     Tableau de bord professionnel • {format(new Date(), 'EEEE d MMMM yyyy', { locale: fr })}
                   </p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-6 text-blue-100">
-                <div className="flex items-center gap-2">
-                  <Heart className="h-5 w-5 text-red-300" />
+              <div className="flex items-center gap-2 md:gap-4 text-blue-100 text-[10px] sm:text-xs">
+                <div className="flex items-center gap-1 md:gap-1.5">
+                  <Heart className="h-3.5 w-3.5 md:h-4 md:w-4 text-red-300" />
                   <span className="font-medium">Votre cabinet dental</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Shield className="h-5 w-5 text-green-300" />
+                <div className="flex items-center gap-1 md:gap-1.5">
+                  <Shield className="h-3.5 w-3.5 md:h-4 md:w-4 text-green-300" />
                   <span className="font-medium">Soins de qualité</span>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 md:gap-3">
               <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
                 <DialogTrigger asChild>
-                  <Button className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/30 rounded-2xl px-6 py-3 h-auto font-semibold text-lg transition-all duration-300 transform hover:scale-105">
-                    <Plus className="mr-2 h-5 w-5" />
+                  <Button className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/30 rounded-lg md:rounded-xl px-3 py-1.5 md:px-5 md:py-2.5 h-auto font-semibold text-xs md:text-sm lg:text-base transition-all duration-300 transform hover:scale-105">
+                    <Plus className="mr-1 md:mr-1.5 h-3.5 w-3.5 md:h-4 md:w-4" />
                     Nouveau RDV
                   </Button>
                 </DialogTrigger>
@@ -226,12 +226,12 @@ export default function DashboardHome() {
       </div>
 
       {/* Beautiful Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-6">
         <Card 
           className="border-0 shadow-lg bg-gradient-to-br from-white to-blue-50/50 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105"
           onClick={() => navigate('/dashboard/appointments')}
         >
-          <CardContent className="p-8">
+          <CardContent className="p-3 md:p-5 lg:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 font-medium mb-2">Rendez-vous</p>
@@ -260,7 +260,7 @@ export default function DashboardHome() {
           className="border-0 shadow-lg bg-gradient-to-br from-white to-teal-50/50 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105"
           onClick={() => navigate('/dashboard/patients')}
         >
-          <CardContent className="p-8">
+          <CardContent className="p-3 md:p-5 lg:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 font-medium mb-2">Patients actifs</p>
@@ -288,7 +288,7 @@ export default function DashboardHome() {
         </Card>
 
         <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-green-50/50 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105">
-          <CardContent className="p-8">
+          <CardContent className="p-3 md:p-5 lg:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 font-medium mb-2">Revenus</p>
@@ -307,7 +307,7 @@ export default function DashboardHome() {
         </Card>
 
         <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-purple-50/50 hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:scale-105">
-          <CardContent className="p-8">
+          <CardContent className="p-3 md:p-5 lg:p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 font-medium mb-2">Taux succès</p>
@@ -329,50 +329,50 @@ export default function DashboardHome() {
       </div>
 
       {/* Modern Content Grid */}
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-3 md:gap-5 lg:gap-6">
         {/* Today's Schedule */}
         <div className="xl:col-span-2">
           <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-6 md:p-8 border-b-0">
+            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-3 md:p-4 lg:p-5 border-b-0">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-teal-500 to-blue-600 rounded-2xl flex items-center justify-center">
-                    <Calendar className="w-5 h-5 text-white" />
+                <div className="flex items-center gap-2 md:gap-3">
+                  <div className="w-8 h-8 md:w-9 md:h-9 bg-gradient-to-br from-teal-500 to-blue-600 rounded-xl md:rounded-2xl flex items-center justify-center">
+                    <Calendar className="w-4 h-4 md:w-5 md:h-5 text-white" />
                   </div>
                   <div>
-                    <CardTitle className="text-2xl font-bold text-slate-900">Programme d'aujourd'hui</CardTitle>
-                    <p className="text-slate-600 mt-1">
+                    <CardTitle className="text-base md:text-lg lg:text-xl font-bold text-slate-900">Programme d'aujourd'hui</CardTitle>
+                    <p className="text-slate-600 text-xs md:text-sm mt-0.5">
                       {todayAppointments.length} rendez-vous planifiés
                     </p>
                   </div>
                 </div>
                 <Button
                   onClick={() => navigate('/dashboard/appointments')}
-                  className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 rounded-2xl px-4 py-2 font-semibold shadow-lg hover:shadow-xl transition-all"
+                  className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 rounded-xl md:rounded-2xl px-2 py-1.5 md:px-3 md:py-2 font-semibold shadow-lg hover:shadow-xl transition-all text-xs md:text-sm"
                 >
-                  <Eye className="w-4 h-4 mr-2" />
-                  Voir l'agenda
+                  <Eye className="w-3 h-3 md:w-4 md:h-4 md:mr-2" />
+                  <span className="hidden md:inline">Voir l'agenda</span>
                 </Button>
               </div>
             </CardHeader>
-            <CardContent className="p-6 md:p-8">
+            <CardContent className="p-3 md:p-5 lg:p-6">
               {todayAppointments.length === 0 ? (
-                <div className="text-center py-10">
-                  <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-teal-100 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <Calendar className="w-12 h-12 text-blue-600" />
+                <div className="text-center py-4 md:py-6">
+                  <div className="w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-blue-100 to-teal-100 rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4 shadow-lg">
+                    <Calendar className="w-8 h-8 md:w-10 md:h-10 text-blue-600" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-900 mb-3">Journée libre</h3>
-                  <p className="text-slate-600 text-lg mb-6">Aucun rendez-vous programmé pour aujourd'hui</p>
+                  <h3 className="text-base md:text-lg font-bold text-slate-900 mb-2">Journée libre</h3>
+                  <p className="text-slate-600 text-sm md:text-base mb-3 md:mb-4">Aucun rendez-vous programmé pour aujourd'hui</p>
                   <Button
                     onClick={() => setShowAddDialog(true)}
-                    className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 rounded-2xl px-6 py-3 h-auto font-semibold shadow-lg"
+                    className="bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 rounded-xl md:rounded-2xl px-4 py-2 md:px-5 md:py-2.5 h-auto font-semibold shadow-lg text-xs md:text-sm"
                   >
-                    <Plus className="w-5 h-5 mr-2" />
+                    <Plus className="w-4 h-4 md:w-5 md:h-5 mr-1.5 md:mr-2" />
                     Planifier un RDV
                   </Button>
                 </div>
               ) : (
-                <div className="space-y-6">
+                <div className="space-y-2 md:space-y-4">
                   {todayAppointments.map((appointment) => {
                     const patient = patients.find(p => p.id === appointment.patientId);
                     const service = dentist?.services?.find((s: any) => s.id === appointment.serviceId);
@@ -382,36 +382,36 @@ export default function DashboardHome() {
                         className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden group bg-gradient-to-r from-white to-blue-50/30 cursor-pointer"
                         onClick={() => navigate('/dashboard/appointments')}
                       >
-                        <CardContent className="p-6">
+                        <CardContent className="p-3 md:p-4 lg:p-5">
                           <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                              <div className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-teal-600 text-white px-4 py-2 rounded-full font-semibold shadow-lg">
-                                <Clock className="w-4 h-4" />
+                            <div className="flex items-center gap-2 md:gap-3">
+                              <div className="flex items-center gap-1.5 bg-gradient-to-r from-blue-500 to-teal-600 text-white px-2 py-1 md:px-3 md:py-1.5 rounded-full font-semibold shadow-lg text-xs md:text-sm">
+                                <Clock className="w-3 h-3 md:w-4 md:h-4" />
                                 {appointment.time}
                               </div>
                               
-                              <div className="h-12 w-12 bg-gradient-to-br from-teal-500 to-blue-600 rounded-2xl flex items-center justify-center text-white font-bold shadow-lg">
+                              <div className="h-8 w-8 md:h-10 md:w-10 bg-gradient-to-br from-teal-500 to-blue-600 rounded-xl md:rounded-2xl flex items-center justify-center text-white font-bold shadow-lg text-xs md:text-sm">
                                 {patient?.name?.split(' ').map(n => n[0]).join('').slice(0, 2) || '?'}
                               </div>
                               
                               <div>
-                                <p className="font-bold text-lg text-slate-900 group-hover:text-blue-700 transition-colors">
+                                <p className="font-bold text-sm md:text-base text-slate-900 group-hover:text-blue-700 transition-colors">
                                   {patient?.name || 'Patient inconnu'}
                                 </p>
-                                <div className="flex items-center gap-4 text-sm text-slate-600">
+                                <div className="flex items-center gap-2 md:gap-3 text-xs md:text-sm text-slate-600">
                                   <span className="flex items-center gap-1">
-                                    <Stethoscope className="w-4 h-4" />
-                                    {service?.name || 'Service'}
+                                    <Stethoscope className="w-3 h-3 md:w-4 md:h-4" />
+                                    <span className="hidden sm:inline">{service?.name || 'Service'}</span>
                                   </span>
                                   <span className="flex items-center gap-1">
-                                    <DollarSign className="w-4 h-4" />
+                                    <DollarSign className="w-3 h-3 md:w-4 md:h-4" />
                                     {service?.price || 0} MAD
                                   </span>
                                 </div>
                               </div>
                             </div>
                             
-                            <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2 md:gap-3">
                               {getStatusBadge(appointment.status)}
                               <ArrowUpRight className="w-5 h-5 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
                             </div>
@@ -427,85 +427,85 @@ export default function DashboardHome() {
         </div>
 
         {/* Modern Sidebar */}
-        <div className="xl:col-span-1 space-y-8">
+        <div className="xl:col-span-1 space-y-3 md:space-y-5">
           {/* Quick Actions */}
-          <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-purple-50/30 to-pink-50/20 p-6 border-b-0">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center">
-                  <Activity className="w-5 h-5 text-white" />
+          <Card className="border-0 shadow-xl bg-white rounded-2xl md:rounded-3xl overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-slate-50 via-purple-50/30 to-pink-50/20 p-3 md:p-4 lg:p-5 border-b-0">
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className="w-8 h-8 md:w-9 md:h-9 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl md:rounded-2xl flex items-center justify-center">
+                  <Activity className="w-4 h-4 md:w-5 md:h-5 text-white" />
                 </div>
-                <CardTitle className="text-xl font-bold text-slate-900">Actions rapides</CardTitle>
+                <CardTitle className="text-base md:text-lg font-bold text-slate-900">Actions rapides</CardTitle>
               </div>
             </CardHeader>
-            <CardContent className="p-6 space-y-3">
+            <CardContent className="p-3 md:p-4 lg:p-5 space-y-2">
               <Button
                 onClick={() => navigate('/dashboard/patients')}
-                className="w-full justify-start h-10 bg-gradient-to-r from-teal-50 to-blue-50 hover:from-teal-100 hover:to-blue-100 text-slate-700 border-0 rounded-2xl font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl"
+                className="w-full justify-start h-8 md:h-9 bg-gradient-to-r from-teal-50 to-blue-50 hover:from-teal-100 hover:to-blue-100 text-slate-700 border-0 rounded-xl md:rounded-2xl font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl text-xs md:text-sm"
               >
-                <Users className="w-4 h-4 mr-3 text-teal-600" />
+                <Users className="w-3 h-3 md:w-4 md:h-4 mr-2 text-teal-600" />
                 Gérer les patients
               </Button>
               <Button
                 onClick={() => navigate('/dashboard/appointments')}
-                className="w-full justify-start h-10 bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 text-slate-700 border-0 rounded-2xl font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl"
+                className="w-full justify-start h-8 md:h-9 bg-gradient-to-r from-blue-50 to-purple-50 hover:from-blue-100 hover:to-purple-100 text-slate-700 border-0 rounded-xl md:rounded-2xl font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl text-xs md:text-sm"
               >
-                <Calendar className="w-4 h-4 mr-3 text-blue-600" />
+                <Calendar className="w-3 h-3 md:w-4 md:h-4 mr-2 text-blue-600" />
                 Consulter l'agenda
               </Button>
               <Button
                 onClick={() => setShowAddDialog(true)}
-                className="w-full justify-start h-10 bg-gradient-to-r from-green-50 to-teal-50 hover:from-green-100 hover:to-teal-100 text-slate-700 border-0 rounded-2xl font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl"
+                className="w-full justify-start h-8 md:h-9 bg-gradient-to-r from-green-50 to-teal-50 hover:from-green-100 hover:to-teal-100 text-slate-700 border-0 rounded-xl md:rounded-2xl font-semibold transition-all hover:scale-105 shadow-lg hover:shadow-xl text-xs md:text-sm"
               >
-                <Plus className="w-4 h-4 mr-3 text-green-600" />
+                <Plus className="w-3 h-3 md:w-4 md:h-4 mr-2 text-green-600" />
                 Nouveau rendez-vous
               </Button>
             </CardContent>
           </Card>
 
           {/* Upcoming Appointments */}
-          <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-orange-50/30 to-yellow-50/20 p-6 border-b-0">
+          <Card className="border-0 shadow-xl bg-white rounded-2xl md:rounded-3xl overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-slate-50 via-orange-50/30 to-yellow-50/20 p-3 md:p-4 lg:p-5 border-b-0">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-yellow-600 rounded-2xl flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-white" />
+                <div className="flex items-center gap-2 md:gap-3">
+                  <div className="w-8 h-8 md:w-9 md:h-9 bg-gradient-to-br from-orange-500 to-yellow-600 rounded-xl md:rounded-2xl flex items-center justify-center">
+                    <Clock className="w-4 h-4 md:w-5 md:h-5 text-white" />
                   </div>
                   <div>
-                    <CardTitle className="text-xl font-bold text-slate-900">Prochains RDV</CardTitle>
-                    <p className="text-slate-600">Cette semaine</p>
+                    <CardTitle className="text-base md:text-lg font-bold text-slate-900">Prochains RDV</CardTitle>
+                    <p className="text-slate-600 text-xs md:text-sm">Cette semaine</p>
                   </div>
                 </div>
-                <Badge className="bg-gradient-to-r from-orange-500 to-yellow-600 text-white rounded-full px-3 py-1 font-semibold">
+                <Badge className="bg-gradient-to-r from-orange-500 to-yellow-600 text-white rounded-full px-2 py-0.5 md:px-3 md:py-1 font-semibold text-xs">
                   {upcomingAppointments.length}
                 </Badge>
               </div>
             </CardHeader>
-            <CardContent className="p-6">
+            <CardContent className="p-3 md:p-4 lg:p-5">
               {upcomingAppointments.slice(0, 4).length === 0 ? (
-                <div className="text-center py-8">
-                  <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Clock className="w-8 h-8 text-orange-600" />
+                <div className="text-center py-4 md:py-6">
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full flex items-center justify-center mx-auto mb-2 md:mb-3">
+                    <Clock className="w-6 h-6 md:w-7 md:h-7 text-orange-600" />
                   </div>
-                  <p className="text-slate-600 font-medium">Aucun RDV programmé</p>
-                  <p className="text-sm text-slate-500 mt-1">Planifiez de nouveaux rendez-vous</p>
+                  <p className="text-slate-600 font-medium text-xs md:text-sm">Aucun RDV programmé</p>
+                  <p className="text-xs text-slate-500 mt-0.5">Planifiez de nouveaux rendez-vous</p>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-2 md:space-y-3">
                   {upcomingAppointments.slice(0, 4).map((appointment) => {
                     const patient = patients.find(p => p.id === appointment.patientId);
                     return (
                       <div 
                         key={appointment.id} 
-                        className="flex items-center justify-between p-4 cursor-pointer hover:bg-slate-50 rounded-2xl transition-all group border border-slate-100 hover:border-slate-200 hover:shadow-lg"
+                        className="flex items-center justify-between p-2 md:p-3 cursor-pointer hover:bg-slate-50 rounded-xl md:rounded-2xl transition-all group border border-slate-100 hover:border-slate-200 hover:shadow-lg"
                         onClick={() => navigate('/dashboard/appointments')}
                       >
-                        <div className="flex items-center gap-3">
-                          <div className="h-10 w-10 bg-gradient-to-br from-blue-500 to-teal-600 rounded-xl flex items-center justify-center text-white font-bold text-sm">
+                        <div className="flex items-center gap-2">
+                          <div className="h-8 w-8 md:h-9 md:w-9 bg-gradient-to-br from-blue-500 to-teal-600 rounded-lg md:rounded-xl flex items-center justify-center text-white font-bold text-xs">
                             {patient?.name?.split(' ').map(n => n[0]).join('').slice(0, 2) || '?'}
                           </div>
                           <div>
-                            <p className="font-bold text-sm text-slate-900 group-hover:text-blue-700 transition-colors">
+                            <p className="font-bold text-xs md:text-sm text-slate-900 group-hover:text-blue-700 transition-colors">
                               {getPatientName(appointment.patientId)}
                             </p>
                             <p className="text-xs text-slate-500">
