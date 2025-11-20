@@ -75,29 +75,29 @@ export default function SettingsPage() {
   const hasChanges = JSON.stringify(formData) !== JSON.stringify(dentist);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-3 md:space-y-5">
       {/* Header */}
       <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 rounded-3xl opacity-95"></div>
-        <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl p-8 text-white overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-white/5 to-transparent rounded-full translate-y-24 -translate-x-24"></div>
-          <div className="relative flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-            <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                  <Settings className="h-8 w-8 text-white" />
+        <div className="absolute inset-0 bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 rounded-xl md:rounded-2xl opacity-95"></div>
+        <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl md:rounded-2xl p-3 md:p-5 lg:p-7 text-white overflow-hidden">
+          <div className="absolute top-0 right-0 w-40 h-40 md:w-56 md:h-56 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-20 md:-translate-y-28 translate-x-20 md:translate-x-28"></div>
+          <div className="absolute bottom-0 left-0 w-28 h-28 md:w-40 md:h-40 bg-gradient-to-tr from-white/5 to-transparent rounded-full translate-y-14 md:translate-y-20 -translate-x-14 md:-translate-x-20"></div>
+          <div className="relative flex flex-col lg:flex-row justify-between items-start lg:items-center gap-2.5 md:gap-5">
+            <div className="space-y-1.5 md:space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:gap-3">
+                <div className="w-10 h-10 md:w-14 md:h-14 bg-white/20 backdrop-blur-sm rounded-lg md:rounded-xl flex items-center justify-center">
+                  <Settings className="h-5 w-5 md:h-7 md:w-7 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-4xl font-bold tracking-tight">Configuration Cabinet</h1>
-                  <p className="text-blue-100 mt-1 text-xl">
+                  <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold tracking-tight">Configuration Cabinet</h1>
+                  <p className="text-blue-100 mt-0.5 md:mt-1 text-xs sm:text-sm lg:text-base xl:text-lg font-medium">
                     Gérez vos préférences et profil professionnel
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-6 text-blue-100">
-                <div className="flex items-center gap-2"><Heart className="h-5 w-5 text-red-300" /><span>Personnalisation</span></div>
-                <div className="flex items-center gap-2"><Shield className="h-5 w-5 text-green-300" /><span>Sécurisé</span></div>
+              <div className="flex items-center gap-2 md:gap-4 text-blue-100 text-[10px] sm:text-xs">
+                <div className="flex items-center gap-1 md:gap-1.5"><Heart className="h-3.5 w-3.5 md:h-4 md:w-4 text-red-300" /><span>Personnalisation</span></div>
+                <div className="flex items-center gap-1 md:gap-1.5"><Shield className="h-3.5 w-3.5 md:h-4 md:w-4 text-green-300" /><span>Sécurisé</span></div>
               </div>
             </div>
             <Button onClick={handleSave} disabled={!hasChanges || isSaving} className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/30 rounded-2xl px-6 py-3 h-auto font-semibold text-lg transition-all duration-300 transform hover:scale-105 disabled:opacity-50">
@@ -108,7 +108,7 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      <Tabs defaultValue="clinic" className="space-y-8">
+      <Tabs defaultValue="clinic" className="space-y-3 md:space-y-5">
         <TabsList className="grid w-full grid-cols-4 bg-white/90 backdrop-blur-sm rounded-3xl p-3 shadow-xl border border-slate-200/50 h-16">
           {['clinic', 'hours', 'booking', 'notifications'].map(tab => (
             <TabsTrigger key={tab} value={tab} className="rounded-2xl font-bold text-base h-12 px-6 transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-slate-50 text-slate-700">
@@ -121,7 +121,7 @@ export default function SettingsPage() {
           ))}
         </TabsList>
 
-        <TabsContent value="clinic" className="space-y-8">
+        <TabsContent value="clinic" className="space-y-3 md:space-y-5">
           <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
             <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-8 border-b-0">
               <CardTitle className="flex items-center gap-4 text-2xl font-bold text-slate-900">
@@ -130,8 +130,8 @@ export default function SettingsPage() {
               </CardTitle>
               <CardDescription className="text-slate-600 text-lg mt-2">Informations publiques de votre page de réservation</CardDescription>
             </CardHeader>
-            <CardContent className="p-8 space-y-6">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <CardContent className="p-3 md:p-5 lg:p-6 space-y-4 md:space-y-5">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-5 lg:gap-6">
                 <div className="lg:col-span-1 space-y-6">
                   <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-indigo-50/30 rounded-2xl p-6 text-center">
                     <div className="relative w-24 h-24 mx-auto">
@@ -176,14 +176,14 @@ export default function SettingsPage() {
 
         <TabsContent value="hours">
           <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-8 border-b-0">
+            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-3 md:p-4 lg:p-5 border-b-0">
               <CardTitle className="flex items-center gap-4 text-2xl font-bold text-slate-900">
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg"><Clock className="h-6 w-6 text-white" /></div>
                 Horaires de travail
               </CardTitle>
               <CardDescription className="text-slate-600 text-lg mt-2">Définissez vos horaires d'ouverture</CardDescription>
             </CardHeader>
-            <CardContent className="p-8 space-y-4">
+            <CardContent className="p-3 md:p-5 lg:p-6 space-y-3 md:space-y-4">
               {days.map(day => {
                 const hours = formData.workingHours?.[day.key as keyof typeof formData.workingHours];
                 return (

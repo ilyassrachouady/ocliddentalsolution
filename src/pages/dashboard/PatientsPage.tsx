@@ -62,40 +62,40 @@ export default function PatientsPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-3 md:space-y-5">
       {/* Hero Header */}
       <div className="relative">
-        <div className="absolute inset-0 bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 rounded-3xl opacity-95"></div>
-        <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl p-8 text-white overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-32 translate-x-32"></div>
-          <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-white/5 to-transparent rounded-full translate-y-24 -translate-x-24"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-teal-600 via-blue-600 to-indigo-600 rounded-xl md:rounded-2xl opacity-95"></div>
+        <div className="relative bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl md:rounded-2xl p-3 md:p-5 lg:p-7 text-white overflow-hidden">
+          <div className="absolute top-0 right-0 w-40 h-40 md:w-56 md:h-56 bg-gradient-to-br from-white/10 to-transparent rounded-full -translate-y-20 md:-translate-y-28 translate-x-20 md:translate-x-28"></div>
+          <div className="absolute bottom-0 left-0 w-28 h-28 md:w-40 md:h-40 bg-gradient-to-tr from-white/5 to-transparent rounded-full translate-y-14 md:translate-y-20 -translate-x-14 md:-translate-x-20"></div>
           
-          <div className="relative flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-            <div className="space-y-4">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                  <Users className="h-8 w-8 text-white" />
+          <div className="relative flex flex-col lg:flex-row justify-between items-start lg:items-center gap-2.5 md:gap-5">
+            <div className="space-y-1.5 md:space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 md:gap-3">
+                <div className="w-10 h-10 md:w-14 md:h-14 bg-white/20 backdrop-blur-sm rounded-lg md:rounded-xl flex items-center justify-center">
+                  <Users className="h-5 w-5 md:h-7 md:w-7 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-4xl font-bold tracking-tight">Gestion des Patients</h1>
-                  <p className="text-blue-100 mt-1 text-xl">
+                  <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold tracking-tight">Gestion des Patients</h1>
+                  <p className="text-blue-100 mt-0.5 md:mt-1 text-xs sm:text-sm lg:text-base xl:text-lg font-medium">
                     Dossiers médicaux et suivi personnalisé
                   </p>
                 </div>
               </div>
               
-              <div className="flex items-center gap-6 text-blue-100">
-                <div className="flex items-center gap-2"><Heart className="h-5 w-5 text-red-300" /><span>Soins personnalisés</span></div>
-                <div className="flex items-center gap-2"><Shield className="h-5 w-5 text-green-300" /><span>Données sécurisées</span></div>
+              <div className="flex items-center gap-2 md:gap-4 text-blue-100 text-[10px] sm:text-xs">
+                <div className="flex items-center gap-1 md:gap-1.5"><Heart className="h-3.5 w-3.5 md:h-4 md:w-4 text-red-300" /><span>Soins personnalisés</span></div>
+                <div className="flex items-center gap-1 md:gap-1.5"><Shield className="h-3.5 w-3.5 md:h-4 md:w-4 text-green-300" /><span>Données sécurisées</span></div>
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 md:gap-3">
               <Button 
                 onClick={() => setShowAddDialog(true)}
-                className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/30 rounded-2xl px-6 py-3 h-auto font-semibold text-lg transition-all duration-300 transform hover:scale-105"
+                className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/30 rounded-lg md:rounded-xl px-3 py-1.5 md:px-5 md:py-2.5 h-auto font-semibold text-xs md:text-sm lg:text-base transition-all duration-300 transform hover:scale-105"
               >
-                <Plus className="mr-2 h-5 w-5" />
+                <Plus className="mr-1 md:mr-1.5 h-3.5 w-3.5 md:h-4 md:w-4" />
                 Nouveau Patient
               </Button>
             </div>
@@ -104,14 +104,14 @@ export default function PatientsPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 lg:gap-6">
         {[
           { title: "Total Patients", value: patients.length, sub: "Patients actifs", icon: User, color: "teal" },
           { title: "Nouveaux ce mois", value: patients.filter(p => new Date(p.createdAt || new Date()).getMonth() === new Date().getMonth()).length, sub: "Croissance", icon: TrendingUp, color: "green" },
           { title: "RDV à venir", value: patients.reduce((count, p) => count + (getNextAppointment(p) ? 1 : 0), 0), sub: "Consultations prévues", icon: Calendar, color: "blue" }
         ].map(stat => (
           <Card key={stat.title} className="border-0 shadow-lg bg-gradient-to-br from-white to-gray-50/50 hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer group">
-            <CardContent className="p-8">
+            <CardContent className="p-3 md:p-5 lg:p-6">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-slate-600 font-medium mb-2">{stat.title}</p>
@@ -129,7 +129,7 @@ export default function PatientsPage() {
 
       {/* Patients List */}
       <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-        <CardHeader className="border-b-0 bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-6 md:p-8">
+        <CardHeader className="border-b-0 bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-3 md:p-4 lg:p-5">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
             <div className="space-y-2">
               <CardTitle className="text-2xl font-bold text-slate-900 flex items-center gap-3">

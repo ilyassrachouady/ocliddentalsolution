@@ -3,22 +3,28 @@
 @tailwind utilities;
 
 html {
-  /* Base font size */
+  /* Base font size for grands écrans (inchangé) */
   font-size: 100%;
 }
 
-/* For smaller laptop screens */
-@media (max-width: 1536px) {
-  html {
-    font-size: 90%;
-  }
+/* Ajustements uniquement pour petits écrans (ne change rien ≥1280px) */
+@media (max-width: 1280px) { /* Large <= 1280 */
+  html { font-size: 88%; }
 }
-
-/* For even smaller laptop screens */
-@media (max-width: 1440px) {
-  html {
-    font-size: 85%;
-  }
+@media (max-width: 1024px) { /* Medium <= 1024 */
+  html { font-size: 82%; }
+}
+@media (max-width: 768px) { /* Tablet <= 768 */
+  html { font-size: 76%; }
+}
+@media (max-width: 640px) { /* Mobile <= 640 */
+  html { font-size: 70%; }
+}
+@media (max-width: 480px) { /* Small mobile <= 480 */
+  html { font-size: 65%; }
+}
+@media (max-width: 360px) { /* Very small devices */
+  html { font-size: 62%; }
 }
 
 :root {
