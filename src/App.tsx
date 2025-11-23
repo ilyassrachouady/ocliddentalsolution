@@ -17,6 +17,7 @@ import BillingPage from './pages/dashboard/BillingPage';
 import SupportPage from './pages/dashboard/SupportPage';
 import SettingsPage from './pages/dashboard/SettingsPage';
 import PatientProfilePage from './pages/dashboard/PatientProfilePage';
+import GlobalScaleManager from './components/common/GlobalScaleManager';
 import './App.css';
 
 // Protected Route Component
@@ -83,12 +84,14 @@ function AppRoutes() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <AppRoutes />
-        <Toaster />
-      </AuthProvider>
-    </BrowserRouter>
+    <GlobalScaleManager>
+      <BrowserRouter>
+        <AuthProvider>
+          <AppRoutes />
+          <Toaster />
+        </AuthProvider>
+      </BrowserRouter>
+    </GlobalScaleManager>
   );
 }
 
