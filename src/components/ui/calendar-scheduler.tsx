@@ -4,7 +4,6 @@ import * as React from "react";
 import { format, addDays, isSameDay, startOfMonth, endOfMonth, eachDayOfInterval, getDay, isBefore } from "date-fns";
 import { fr } from "date-fns/locale/fr";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { ChevronLeft, ChevronRight, Clock } from "lucide-react";
@@ -116,44 +115,43 @@ function CalendarScheduler({
   today.setHours(0, 0, 0, 0);
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-1.5 sm:space-y-3 md:space-y-4">
       {/* Calendar */}
-      <Card className="shadow-lg border-gray-200">
-        <CardContent className="p-6">
-          {/* Month Navigation */}
-          <div className="flex items-center justify-between mb-6">
+      <div className="bg-white rounded-lg border border-gray-200 p-1.5 sm:p-2 md:p-3 lg:p-4">
+        {/* Month Navigation */}
+        <div className="flex items-center justify-between mb-1.5 sm:mb-2 md:mb-3">
             <Button
               variant="ghost"
               size="sm"
               onClick={handlePrevMonth}
-              className="h-10 w-10 p-0"
+              className="h-6 w-6 sm:h-7 sm:w-7 md:h-9 md:w-9 p-0"
             >
-              <ChevronLeft className="h-5 w-5" />
+              <ChevronLeft className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
             </Button>
-            <h2 className="text-lg font-semibold">
-              {format(currentMonth, "MMMM yyyy", { locale: fr })}
+            <h2 className="text-xs sm:text-sm md:text-base lg:text-lg font-semibold">
+              {format(currentMonth, "MMM yyyy", { locale: fr })}
             </h2>
             <Button
               variant="ghost"
               size="sm"
               onClick={handleNextMonth}
-              className="h-10 w-10 p-0"
+              className="h-6 w-6 sm:h-7 sm:w-7 md:h-9 md:w-9 p-0"
             >
-              <ChevronRight className="h-5 w-5" />
+              <ChevronRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 md:h-4 md:w-4" />
             </Button>
           </div>
 
           {/* Day of Week Headers */}
-          <div className="grid grid-cols-7 gap-2 mb-2">
-            {["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"].map(day => (
-              <div key={day} className="text-center text-sm font-semibold text-gray-500 h-10 flex items-center justify-center">
+          <div className="grid grid-cols-7 gap-0 mb-1">
+            {["D", "L", "M", "M", "J", "V", "S"].map((day, i) => (
+              <div key={`${day}-${i}`} className="h-5 sm:h-6 md:h-7 flex items-center justify-center text-[9px] sm:text-[10px] md:text-xs font-semibold text-gray-500">
                 {day}
               </div>
             ))}
           </div>
 
           {/* Calendar Grid */}
-          <div className="grid grid-cols-7 gap-2">
+          <div className="grid grid-cols-7 gap-0">
             {gridDays.map((day, index) => {
               const isCurrentMonth = day.getMonth() === currentMonth.getMonth();
               const isSelected = selectedDate && isSameDay(day, selectedDate);
@@ -168,13 +166,13 @@ function CalendarScheduler({
                   onClick={() => handleDateSelect(day)}
                   disabled={!dayHasAvailableSlots || isExternallyDisabled || isPastDate}
                   className={cn(
-                    "h-10 rounded-lg font-medium text-sm transition-all",
+                    "h-6 sm:h-7 md:h-8 w-full rounded sm:rounded-md font-medium text-[9px] sm:text-[10px] md:text-xs transition-all",
                     isCurrentMonth ? "text-gray-900" : "text-gray-300",
-                    isSelected && "bg-blue-600 text-white shadow-md ring-2 ring-blue-500 ring-offset-2",
-                    !isSelected && dayHasAvailableSlots && "bg-green-100 text-green-900 border-2 border-green-300 hover:bg-green-200 cursor-pointer",
-                    !isSelected && !dayHasAvailableSlots && isCurrentMonth && !isPastDate && !isExternallyDisabled && "bg-red-100 text-red-900 border-2 border-red-300 cursor-not-allowed opacity-60",
+                    isSelected && "bg-blue-600 text-white shadow-md ring-1 ring-blue-500",
+                    !isSelected && dayHasAvailableSlots && "bg-green-100 text-green-900 border border-green-300 hover:bg-green-200 cursor-pointer",
+                    !isSelected && !dayHasAvailableSlots && isCurrentMonth && !isPastDate && !isExternallyDisabled && "bg-red-100 text-red-900 border border-red-300 cursor-not-allowed opacity-60",
                     (isPastDate || isExternallyDisabled) && !isSelected && "opacity-50 cursor-not-allowed bg-gray-100",
-                    isToday && !isSelected && "ring-2 ring-blue-300",
+                    isToday && !isSelected && "ring-1 ring-blue-300",
                   )}
                 >
                   {format(day, "d")}
@@ -182,33 +180,32 @@ function CalendarScheduler({
               );
             })}
           </div>
-        </CardContent>
-      </Card>
+      </div>
 
       {/* Time Slot Modal */}
       <Dialog open={showTimeModal} onOpenChange={setShowTimeModal}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="w-[96vw] max-w-sm sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="text-center">
               <div className="flex items-center justify-center gap-2">
-                <Clock className="w-5 h-5 text-blue-600" />
-                Créneaux disponibles
+                <Clock className="w-4 h-4 text-blue-600" />
+                <span className="text-sm sm:text-base">Créneaux disponibles</span>
               </div>
-              <div className="text-sm font-normal text-gray-600 mt-1">
-                {modalDate && format(modalDate, "EEEE d MMMM yyyy", { locale: fr })}
+              <div className="text-xs font-normal text-gray-600 mt-1">
+                {modalDate ? format(modalDate, "EEEE d MMMM yyyy", { locale: fr }) : ''}
               </div>
             </DialogTitle>
           </DialogHeader>
           
-          <div className="p-4">
+          <div className="p-2 sm:p-3">
             {slotsToUse.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <Clock className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                <p>Aucun créneau disponible</p>
-                <p className="text-sm">pour cette date</p>
+              <div className="text-center py-6 text-gray-500">
+                <Clock className="w-6 h-6 sm:w-8 sm:h-8 mx-auto mb-2 opacity-50" />
+                <p className="text-xs sm:text-sm">Aucun créneau disponible</p>
+                <p className="text-xs sm:text-sm">pour cette date</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 gap-3 max-h-[300px] overflow-y-auto">
+              <div className="grid grid-cols-3 gap-2 max-h-[250px] sm:max-h-[300px] overflow-y-auto">
                 {slotsToUse.map((slot) => {
                   const isAvailable = modalDate ? getTimeSlotAvailability(modalDate, slot) : false;
                   const isSelected = selectedTime === slot;
@@ -227,17 +224,17 @@ function CalendarScheduler({
                       disabled={!isAvailable}
                       variant={isSelected ? "default" : "outline"}
                       className={cn(
-                        "h-14 transition-all font-semibold text-sm",
-                        isSelected && "bg-blue-600 hover:bg-blue-700 text-white shadow-md ring-2 ring-blue-300",
-                        !isSelected && isAvailable && "bg-green-50 text-green-800 border-2 border-green-300 hover:bg-green-100 hover:border-green-400",
-                        !isSelected && !isAvailable && "bg-red-50 text-red-700 border-2 border-red-200 cursor-not-allowed opacity-60",
+                        "h-11 sm:h-12 transition-all font-semibold text-xs",
+                        isSelected && "bg-blue-600 hover:bg-blue-700 text-white shadow-md ring-1 ring-blue-300",
+                        !isSelected && isAvailable && "bg-green-50 text-green-800 border border-green-300 hover:bg-green-100",
+                        !isSelected && !isAvailable && "bg-red-50 text-red-700 border border-red-200 cursor-not-allowed opacity-60",
                       )}
                     >
                       <div className="text-center">
-                        <div className="font-bold">{slot}</div>
-                        {!isAvailable && <div className="text-xs">Complet</div>}
-                        {isAvailable && !isSelected && <div className="text-xs text-green-600">Disponible</div>}
-                        {isSelected && <div className="text-xs text-blue-200">Sélectionné</div>}
+                        <div className="font-bold text-xs sm:text-sm">{slot}</div>
+                        {!isAvailable && <div className="text-[9px] sm:text-[10px]">Complet</div>}
+                        {isAvailable && !isSelected && <div className="text-[9px] sm:text-[10px] text-green-600">Dispo</div>}
+                        {isSelected && <div className="text-[9px] sm:text-[10px] text-blue-200">Sélectionné</div>}
                       </div>
                     </Button>
                   );
@@ -250,7 +247,7 @@ function CalendarScheduler({
 
       {/* Actions */}
       {showButtons && (
-        <div className="flex gap-3 justify-end">
+        <div className="flex gap-2 justify-end">
           <Button
             variant="outline"
             onClick={() => {
@@ -258,14 +255,14 @@ function CalendarScheduler({
               setSelectedTime(undefined);
               setCurrentMonth(new Date());
             }}
-            className="px-6 h-12"
+            className="px-3 sm:px-4 h-8 sm:h-9 md:h-10 text-xs sm:text-sm"
           >
             Réinitialiser
           </Button>
           <Button
             onClick={() => onConfirm?.({ date: selectedDate, time: selectedTime })}
             disabled={!selectedDate || !selectedTime}
-            className="px-8 h-12 bg-blue-600 hover:bg-blue-700"
+            className="px-4 sm:px-6 h-8 sm:h-9 md:h-10 bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm"
           >
             Confirmer
           </Button>

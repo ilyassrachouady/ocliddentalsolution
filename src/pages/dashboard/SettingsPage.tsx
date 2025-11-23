@@ -17,9 +17,12 @@ import {
   Save,
   Copy,
   Settings,
-  User,
   Shield,
   Heart,
+  CreditCard,
+  Crown,
+  Calendar,
+  Check,
 } from 'lucide-react';
 
 const days = [
@@ -54,17 +57,26 @@ export default function SettingsPage() {
     }, 1000);
   };
 
-  const handleWorkingHoursChange = (day: string, field: 'start' | 'end' | 'enabled', value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      workingHours: {
-        ...prev.workingHours,
-        [day]: {
-          ...prev.workingHours?.[day as keyof typeof prev.workingHours],
-          [field]: value,
+  const handleWorkingHoursChange = (day: string, field: 'start' | 'end' | 'enabled', value: string | boolean) => {
+    setFormData(prev => {
+      const currentHours = prev.workingHours?.[day as keyof typeof prev.workingHours] || {
+        start: '09:00',
+        end: '18:00',
+        enabled: false,
+      };
+
+      return {
+        ...prev,
+        workingHours: {
+          ...prev.workingHours,
+          [day]: {
+            start: field === 'start' ? (value as string) : currentHours.start,
+            end: field === 'end' ? (value as string) : currentHours.end,
+            enabled: field === 'enabled' ? (value as boolean) : currentHours.enabled,
+          },
         },
-      },
-    }));
+      };
+    });
   };
 
   const copyBookingLink = () => {
@@ -109,14 +121,15 @@ export default function SettingsPage() {
       </div>
 
       <Tabs defaultValue="clinic" className="space-y-3 md:space-y-5">
-        <TabsList className="grid w-full grid-cols-4 bg-white/90 backdrop-blur-sm rounded-3xl p-3 shadow-xl border border-slate-200/50 h-16">
-          {['clinic', 'hours', 'booking', 'notifications'].map(tab => (
+        <TabsList className="grid w-full grid-cols-5 bg-white/90 backdrop-blur-sm rounded-3xl p-3 shadow-xl border border-slate-200/50 h-16">
+          {['clinic', 'hours', 'booking', 'subscription', 'notifications'].map(tab => (
             <TabsTrigger key={tab} value={tab} className="rounded-2xl font-bold text-base h-12 px-6 transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-slate-50 text-slate-700">
               {tab === 'clinic' && <Building2 className="h-5 w-5 mr-3" />}
               {tab === 'hours' && <Clock className="h-5 w-5 mr-3" />}
               {tab === 'booking' && <LinkIcon className="h-5 w-5 mr-3" />}
+              {tab === 'subscription' && <CreditCard className="h-5 w-5 mr-3" />}
               {tab === 'notifications' && <Bell className="h-5 w-5 mr-3" />}
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              {tab === 'clinic' ? 'Clinic' : tab === 'hours' ? 'Hours' : tab === 'booking' ? 'Booking' : tab === 'subscription' ? 'Abonnement' : 'Notifications'}
             </TabsTrigger>
           ))}
         </TabsList>
@@ -130,44 +143,41 @@ export default function SettingsPage() {
               </CardTitle>
               <CardDescription className="text-slate-600 text-lg mt-2">Informations publiques de votre page de réservation</CardDescription>
             </CardHeader>
-            <CardContent className="p-3 md:p-5 lg:p-6 space-y-4 md:space-y-5">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-5 lg:gap-6">
-                <div className="lg:col-span-1 space-y-6">
-                  <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-indigo-50/30 rounded-2xl p-6 text-center">
-                    <div className="relative w-24 h-24 mx-auto">
-                      <div className="w-full h-full bg-gradient-to-br from-teal-500 to-blue-600 rounded-full flex items-center justify-center shadow-xl"><User className="h-12 w-12 text-white" /></div>
-                      <Button size="sm" className="absolute bottom-0 right-0 w-8 h-8 rounded-full bg-white shadow-lg p-0"><User className="h-4 w-4 text-slate-600" /></Button>
-                    </div>
-                    <h3 className="font-bold text-slate-900 text-lg mt-4">{formData.name || 'Dr. Praticien'}</h3>
-                    <p className="text-slate-600">{formData.specialty || 'Chirurgien-dentiste'}</p>
-                    <Button variant="outline" size="sm" className="w-full rounded-2xl mt-4">Changer la photo</Button>
-                  </Card>
-                  <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-blue-50/30 rounded-2xl p-6">
-                    <Label htmlFor="clinic-name" className="text-sm font-bold text-slate-700">Nom complet *</Label>
-                    <Input id="clinic-name" value={formData.name || ''} onChange={e => setFormData({ ...formData, name: e.target.value })} className="mt-2 h-12 rounded-2xl border-0 bg-white shadow-lg" placeholder="Dr. Jean Dupont" />
-                  </Card>
+            <CardContent className="p-8 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="clinic-name" className="text-sm font-semibold text-slate-700">Nom complet *</Label>
+                  <Input id="clinic-name" value={formData.name || ''} onChange={e => setFormData({ ...formData, name: e.target.value })} className="h-11 rounded-xl" placeholder="Dr. Jean Dupont" />
                 </div>
-                <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-teal-50/30 rounded-2xl p-6">
-                    <Label htmlFor="clinic-specialty" className="text-sm font-bold text-slate-700">Spécialité *</Label>
-                    <Input id="clinic-specialty" value={formData.specialty || ''} onChange={e => setFormData({ ...formData, specialty: e.target.value })} className="mt-2 h-12 rounded-2xl border-0 bg-white shadow-lg" placeholder="Chirurgien-dentiste" />
-                  </Card>
-                  <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-green-50/30 rounded-2xl p-6">
-                    <Label htmlFor="clinic-address" className="text-sm font-bold text-slate-700">Adresse</Label>
-                    <Input id="clinic-address" value={formData.address || ''} onChange={e => setFormData({ ...formData, address: e.target.value })} className="mt-2 h-12 rounded-2xl border-0 bg-white shadow-lg" placeholder="123 Rue de la Paix" />
-                  </Card>
-                  <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-purple-50/30 rounded-2xl p-6">
-                    <Label htmlFor="clinic-city" className="text-sm font-bold text-slate-700">Ville</Label>
-                    <Input id="clinic-city" value={formData.city || ''} onChange={e => setFormData({ ...formData, city: e.target.value })} className="mt-2 h-12 rounded-2xl border-0 bg-white shadow-lg" placeholder="Casablanca" />
-                  </Card>
-                  <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-orange-50/30 rounded-2xl p-6">
-                    <Label htmlFor="clinic-phone" className="text-sm font-bold text-slate-700">Téléphone *</Label>
-                    <Input id="clinic-phone" type="tel" value={formData.phone || ''} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="mt-2 h-12 rounded-2xl border-0 bg-white shadow-lg" placeholder="+212 6 00 00 00 00" />
-                  </Card>
-                  <Card className="md:col-span-2 border-0 shadow-lg bg-gradient-to-br from-white to-indigo-50/30 rounded-2xl p-6">
-                    <Label htmlFor="clinic-bio" className="text-sm font-bold text-slate-700">Description</Label>
-                    <Textarea id="clinic-bio" value={formData.bio || ''} onChange={e => setFormData({ ...formData, bio: e.target.value })} className="mt-2 rounded-2xl border-0 bg-white shadow-lg min-h-[120px]" placeholder="Décrivez votre cabinet..." />
-                  </Card>
+
+                <div className="space-y-2">
+                  <Label htmlFor="clinic-specialty" className="text-sm font-semibold text-slate-700">Spécialité *</Label>
+                  <Input id="clinic-specialty" value={formData.specialty || ''} onChange={e => setFormData({ ...formData, specialty: e.target.value })} className="h-11 rounded-xl" placeholder="Chirurgien-dentiste" />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="clinic-address" className="text-sm font-semibold text-slate-700">Adresse</Label>
+                  <Input id="clinic-address" value={formData.address || ''} onChange={e => setFormData({ ...formData, address: e.target.value })} className="h-11 rounded-xl" placeholder="123 Rue de la Paix" />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="clinic-city" className="text-sm font-semibold text-slate-700">Ville</Label>
+                  <Input id="clinic-city" value={formData.city || ''} onChange={e => setFormData({ ...formData, city: e.target.value })} className="h-11 rounded-xl" placeholder="Casablanca" />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="clinic-phone" className="text-sm font-semibold text-slate-700">Téléphone *</Label>
+                  <Input id="clinic-phone" type="tel" value={formData.phone || ''} onChange={e => setFormData({ ...formData, phone: e.target.value })} className="h-11 rounded-xl" placeholder="+212 6 00 00 00 00" />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="clinic-email" className="text-sm font-semibold text-slate-700">Email</Label>
+                  <Input id="clinic-email" type="email" value={formData.email || ''} onChange={e => setFormData({ ...formData, email: e.target.value })} className="h-11 rounded-xl" placeholder="cabinet@exemple.com" />
+                </div>
+
+                <div className="md:col-span-2 space-y-2">
+                  <Label htmlFor="clinic-bio" className="text-sm font-semibold text-slate-700">Description</Label>
+                  <Textarea id="clinic-bio" value={formData.bio || ''} onChange={e => setFormData({ ...formData, bio: e.target.value })} className="rounded-xl min-h-[120px]" placeholder="Décrivez votre cabinet..." />
                 </div>
               </div>
             </CardContent>
@@ -227,6 +237,114 @@ export default function SettingsPage() {
                   <li>Intégrez-le dans vos rappels de rendez-vous.</li>
                 </ul>
               </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="subscription">
+          <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-slate-50 via-purple-50/30 to-indigo-50/20 p-8 border-b-0">
+              <CardTitle className="flex items-center gap-4 text-2xl font-bold text-slate-900">
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg"><CreditCard className="h-6 w-6 text-white" /></div>
+                Mon Abonnement
+              </CardTitle>
+              <CardDescription className="text-slate-600 text-lg mt-2">Gérez votre plan et vos paiements</CardDescription>
+            </CardHeader>
+            <CardContent className="p-8 space-y-6">
+              {/* Current Plan Card */}
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-500 via-indigo-600 to-blue-600 p-8 text-white shadow-2xl">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-32 translate-x-32"></div>
+                <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-24 -translate-x-24"></div>
+                
+                <div className="relative space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="flex items-center gap-3 mb-2">
+                        <Crown className="h-8 w-8 text-yellow-300" />
+                        <h3 className="text-3xl font-bold">Plan Premium</h3>
+                      </div>
+                      <p className="text-blue-100 text-lg">Accès complet à toutes les fonctionnalités</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-5xl font-bold">400 MAD</p>
+                      <p className="text-blue-100 text-lg">/mois</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4 pt-4 border-t border-white/20">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                      <div className="flex items-center gap-2 text-blue-100 text-sm mb-1">
+                        <Calendar className="h-4 w-4" />
+                        <span>Prochain paiement</span>
+                      </div>
+                      <p className="text-2xl font-bold">15 Déc 2024</p>
+                    </div>
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                      <div className="flex items-center gap-2 text-blue-100 text-sm mb-1">
+                        <Check className="h-4 w-4" />
+                        <span>Statut</span>
+                      </div>
+                      <p className="text-2xl font-bold">Actif</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Features Included */}
+              <div className="bg-gradient-to-r from-slate-50 to-blue-50/30 rounded-2xl p-6 border border-slate-200">
+                <h4 className="font-bold text-slate-900 text-lg mb-4 flex items-center gap-2">
+                  <Check className="h-5 w-5 text-green-600" />
+                  Fonctionnalités incluses
+                </h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {[
+                    'Rendez-vous illimités',
+                    'Gestion des patients',
+                    'Facturation complète',
+                    'Page de réservation en ligne',
+                    'Rappels automatiques SMS',
+                    'Support technique prioritaire',
+                    'Statistiques avancées',
+                    'Sauvegarde automatique'
+                  ].map((feature, index) => (
+                    <div key={index} className="flex items-center gap-2 text-slate-700">
+                      <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Check className="h-3 w-3 text-white" />
+                      </div>
+                      <span className="text-sm font-medium">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Payment History */}
+              <div>
+                <h4 className="font-bold text-slate-900 text-lg mb-4">Historique des paiements</h4>
+                <div className="space-y-3">
+                  {[
+                    { date: '15 Nov 2024', amount: '400 MAD', status: 'Payé' },
+                    { date: '15 Oct 2024', amount: '400 MAD', status: 'Payé' },
+                    { date: '15 Sep 2024', amount: '400 MAD', status: 'Payé' }
+                  ].map((payment, index) => (
+                    <div key={index} className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 hover:shadow-md transition-shadow">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center">
+                          <Check className="h-5 w-5 text-white" />
+                        </div>
+                        <div>
+                          <p className="font-semibold text-slate-900">{payment.date}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-bold text-slate-900">{payment.amount}</p>
+                        <p className="text-sm text-green-600 font-medium">{payment.status}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
             </CardContent>
           </Card>
         </TabsContent>

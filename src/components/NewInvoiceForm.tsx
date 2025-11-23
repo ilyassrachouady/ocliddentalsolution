@@ -1,10 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import {
   Select,
   SelectContent,
@@ -15,20 +14,16 @@ import {
 import { 
   FileText, 
   User, 
-  DollarSign, 
   Calculator, 
-  Calendar, 
   Plus,
   Trash2,
-  Save,
   Eye,
   CheckCircle2,
   X,
   Receipt,
-  CreditCard
+  Search
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
 
 interface InvoiceItem {
   id: string;
@@ -64,6 +59,9 @@ const mockTreatments = [
 
 export default function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const [openPatient, setOpenPatient] = useState(false);
+  const [searchPatient, setSearchPatient] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
     patientId: '',
     dueDate: '',
@@ -85,12 +83,20 @@ export default function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormPr
   const calculateTotals = () => {
     const subtotal = items.reduce((sum, item) => sum + item.total, 0);
     const tax = subtotal * taxRate;
-    const total = subtotal + tax;
+    const total = subtotal; // Total sans TVA
     
     return { subtotal, tax, total };
   };
 
   const { subtotal, tax, total } = calculateTotals();
+
+  useEffect(() => {
+    if (openPatient && searchInputRef.current) {
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 0);
+    }
+  }, [openPatient]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -211,19 +217,78 @@ export default function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormPr
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label className="text-sm font-bold text-slate-700">Patient *</Label>
-                <Select onValueChange={(value) => setFormData(prev => ({ ...prev, patientId: value }))}>
-                  <SelectTrigger className="h-12 rounded-xl border-0 bg-white shadow-lg">
+                <Select 
+                  value={formData.patientId} 
+                  onValueChange={(value) => {
+                    setFormData(prev => ({ ...prev, patientId: value }));
+                    setSearchPatient('');
+                  }}
+                  open={openPatient}
+                  onOpenChange={setOpenPatient}
+                >
+                  <SelectTrigger className="h-12 rounded-xl border border-slate-200 bg-white">
                     <SelectValue placeholder="Sélectionner un patient" />
                   </SelectTrigger>
-                  <SelectContent>
-                    {mockPatients.map((patient) => (
-                      <SelectItem key={patient.id} value={patient.id}>
-                        <div className="flex flex-col">
-                          <span className="font-semibold">{patient.name}</span>
-                          <span className="text-sm text-slate-500">{patient.phone}</span>
+                  <SelectContent 
+                    onInteractOutside={(e) => {
+                      const target = e.target as HTMLElement;
+                      if (target.closest('[data-search-input]')) {
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    <div className="sticky top-0 bg-white border-b border-slate-200 p-2 z-10" data-search-input>
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
+                        <input
+                          ref={searchInputRef}
+                          type="text"
+                          placeholder="Rechercher..."
+                          value={searchPatient}
+                          onChange={(e) => setSearchPatient(e.target.value)}
+                          className="w-full h-9 pl-10 pr-3 rounded-lg border border-slate-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none"
+                          autoFocus
+                          onKeyDown={(e) => {
+                            e.stopPropagation();
+                            if (e.key === 'Escape') {
+                              setOpenPatient(false);
+                            }
+                          }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                          }}
+                          onMouseDown={(e) => {
+                            e.stopPropagation();
+                          }}
+                          onFocus={(e) => {
+                            e.stopPropagation();
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <div className="max-h-[200px] overflow-y-auto">
+                      {mockPatients
+                        .filter(patient => 
+                          patient.name.toLowerCase().includes(searchPatient.toLowerCase()) ||
+                          patient.phone.includes(searchPatient)
+                        )
+                        .map((patient) => (
+                          <SelectItem key={patient.id} value={patient.id}>
+                            <div className="flex flex-col">
+                              <span className="font-semibold">{patient.name}</span>
+                              <span className="text-sm text-slate-500">{patient.phone}</span>
+                            </div>
+                          </SelectItem>
+                        ))}
+                      {mockPatients.filter(patient => 
+                        patient.name.toLowerCase().includes(searchPatient.toLowerCase()) ||
+                        patient.phone.includes(searchPatient)
+                      ).length === 0 && (
+                        <div className="p-4 text-center text-sm text-slate-500">
+                          Aucun patient trouvé
                         </div>
-                      </SelectItem>
-                    ))}
+                      )}
+                    </div>
                   </SelectContent>
                 </Select>
               </div>
@@ -234,7 +299,7 @@ export default function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormPr
                   type="date"
                   value={formData.dueDate}
                   onChange={(e) => setFormData(prev => ({ ...prev, dueDate: e.target.value }))}
-                  className="h-12 rounded-xl border-0 bg-white shadow-lg focus:shadow-xl transition-all focus:ring-2 focus:ring-blue-500"
+                  className="h-12 rounded-xl border border-slate-200 bg-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 />
               </div>
             </div>
@@ -269,7 +334,7 @@ export default function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormPr
                     <div className="md:col-span-2 space-y-2">
                       <Label className="text-sm font-medium text-slate-700">Traitement</Label>
                       <Select onValueChange={(value) => updateItem(item.id, 'treatmentId', value)}>
-                        <SelectTrigger className="h-10 rounded-lg">
+                        <SelectTrigger className="h-10 rounded-lg border border-slate-200">
                           <SelectValue placeholder="Choisir un traitement" />
                         </SelectTrigger>
                         <SelectContent>
@@ -292,7 +357,7 @@ export default function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormPr
                         min="1"
                         value={item.quantity}
                         onChange={(e) => updateItem(item.id, 'quantity', parseInt(e.target.value) || 1)}
-                        className="h-10 rounded-lg"
+                        className="h-10 rounded-lg border border-slate-200"
                       />
                     </div>
                     
@@ -340,19 +405,9 @@ export default function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormPr
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <div className="flex justify-between items-center py-2 border-b border-slate-200">
-                <span className="text-slate-600">Sous-total</span>
-                <span className="font-semibold text-slate-900">{subtotal.toFixed(2)} MAD</span>
-              </div>
-              <div className="flex justify-between items-center py-2 border-b border-slate-200">
-                <span className="text-slate-600">TVA (20%)</span>
-                <span className="font-semibold text-slate-900">{tax.toFixed(2)} MAD</span>
-              </div>
-              <div className="flex justify-between items-center py-3 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl px-4">
-                <span className="text-xl font-bold text-slate-900">Total</span>
-                <span className="text-2xl font-bold text-purple-600">{total.toFixed(2)} MAD</span>
-              </div>
+            <div className="flex justify-between items-center py-4 bg-gradient-to-r from-purple-50 to-blue-50 rounded-xl px-6">
+              <span className="text-2xl font-bold text-slate-900">Total</span>
+              <span className="text-3xl font-bold text-purple-600">{total.toFixed(2)} MAD</span>
             </div>
           </CardContent>
         </Card>
@@ -371,7 +426,7 @@ export default function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormPr
             <Textarea
               value={formData.notes}
               onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
-              className="rounded-xl border-0 bg-white shadow-lg focus:shadow-xl transition-all focus:ring-2 focus:ring-orange-500 resize-none"
+              className="rounded-xl border border-slate-200 bg-white focus:border-orange-500 focus:ring-1 focus:ring-orange-500 resize-none"
               rows={3}
               placeholder="Conditions de paiement, remarques particulières..."
             />
@@ -386,7 +441,7 @@ export default function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormPr
             type="button"
             variant="outline"
             onClick={onCancel}
-            className="h-12 px-6 rounded-xl bg-white hover:bg-slate-50 border border-slate-300 font-semibold"
+            className="h-12 px-6 rounded-xl border-slate-300 font-semibold"
           >
             <X className="mr-2 h-5 w-5" />
             Annuler
@@ -402,7 +457,7 @@ export default function NewInvoiceForm({ onSuccess, onCancel }: NewInvoiceFormPr
             type="submit"
             onClick={handleSubmit}
             disabled={isLoading || !formData.patientId || items.length === 0}
-            className="h-12 px-8 rounded-xl bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 font-bold text-lg shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
+            className="h-12 px-8 rounded-xl bg-gradient-to-r from-green-500 to-blue-600 hover:from-green-600 hover:to-blue-700 font-bold text-lg"
           >
             {isLoading ? (
               <>

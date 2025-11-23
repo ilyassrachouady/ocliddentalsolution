@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { api } from '@/lib/api';
-import { Appointment, Patient } from '@/types';
+import { Appointment, Patient, AppointmentStatus } from '@/types';
 import { format, isToday, isPast, isFuture, startOfMonth, endOfMonth, eachDayOfInterval, getDay, addDays, isSameDay, isBefore } from 'date-fns';
 import { fr } from 'date-fns/locale/fr';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,15 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import QuizStyleBooking from '@/components/ui/quiz-style-booking';
+import { ModernAppointmentModalV2 } from '@/components/ui/modern-appointment-modal-v2';
 import { toast } from 'sonner';
 import { Plus, Calendar as CalendarIcon, ChevronLeft, ChevronRight, Filter, List, CheckCircle2, XCircle, Timer } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -179,10 +171,12 @@ export default function AppointmentsPage() {
 
   useEffect(() => {
     loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dentist]);
 
   useEffect(() => {
     applyFilter();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter, appointments]);
 
   const loadData = async () => {
@@ -195,7 +189,8 @@ export default function AppointmentsPage() {
       ]);
       setAppointments(apptsData);
       setPatients(patientsData);
-    } catch (error) {
+    } catch (err) {
+      console.error('Error loading data:', err);
       toast.error('Erreur lors du chargement des données');
     } finally {
       setIsLoading(false);
@@ -237,12 +232,13 @@ export default function AppointmentsPage() {
 
   const handleStatusChange = async (id: string, newStatus: string) => {
     if (!dentist) return;
-    setAppointments(prev => prev.map(apt => apt.id === id ? { ...apt, status: newStatus as any } : apt));
+    setAppointments(prev => prev.map(apt => apt.id === id ? { ...apt, status: newStatus as AppointmentStatus } : apt));
     try {
-      await api.updateAppointment(id, { status: newStatus as any, dentistId: dentist.id });
+      await api.updateAppointment(id, { status: newStatus as AppointmentStatus, dentistId: dentist.id });
       toast.success('Statut mis à jour');
       await loadData();
-    } catch (error) {
+    } catch (err) {
+      console.error('Error updating status:', err);
       toast.error('Erreur lors de la mise à jour');
       await loadData();
     }
@@ -283,32 +279,31 @@ export default function AppointmentsPage() {
             </div>
 
             <div className="flex items-center gap-2 md:gap-3">
-              <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-                <DialogTrigger asChild>
-                  <Button className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/30 rounded-lg md:rounded-xl px-3 py-1.5 md:px-5 md:py-2.5 h-auto font-semibold text-xs md:text-sm lg:text-base transition-all duration-300 transform hover:scale-105">
-                    <Plus className="mr-1 md:mr-1.5 h-3.5 w-3.5 md:h-4 md:w-4" />
-                    Nouveau RDV
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-6xl max-h-[90vh] overflow-y-auto border-0 shadow-2xl">
-                  <DialogHeader>
-                    <DialogTitle className="text-2xl font-bold text-slate-900">Nouveau rendez-vous</DialogTitle>
-                    <DialogDescription className="text-slate-600">
-                      Créez un nouveau rendez-vous pour un patient
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="w-full">
-                    <QuizStyleBooking 
-                      onSuccess={() => {
-                        setShowAddDialog(false);
-                        loadData();
-                        toast.success('Rendez-vous créé avec succès!');
-                      }}
-                      onCancel={() => setShowAddDialog(false)}
-                    />
-                  </div>
-                </DialogContent>
-              </Dialog>
+              <Button 
+                onClick={() => setShowAddDialog(true)}
+                className="bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white border-white/30 rounded-lg md:rounded-xl px-3 py-1.5 md:px-5 md:py-2.5 h-auto font-semibold text-xs md:text-sm lg:text-base transition-all duration-300 transform hover:scale-105"
+              >
+                <Plus className="mr-1 md:mr-1.5 h-3.5 w-3.5 md:h-4 md:w-4" />
+                Nouveau RDV
+              </Button>
+              
+              <ModernAppointmentModalV2
+                open={showAddDialog}
+                onOpenChange={setShowAddDialog}
+                dentistId={dentist?.id}
+                services={dentist?.services?.map(s => ({
+                  id: s.id,
+                  name: s.name,
+                  description: s.description,
+                  duration: '30 min',
+                  price: s.price.toString()
+                }))}
+                onConfirm={(data) => {
+                  // Créer le rendez-vous avec les données
+                  console.log('Rendez-vous confirmé:', data);
+                  loadData();
+                }}
+              />
             </div>
           </div>
         </div>

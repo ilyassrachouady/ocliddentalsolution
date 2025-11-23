@@ -26,6 +26,9 @@ import {
   LogOut,
   Stethoscope,
   CreditCard,
+  Briefcase,
+  LifeBuoy,
+  Link as LinkIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -33,7 +36,9 @@ const navigation = [
   { name: 'Tableau de bord', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Rendez-vous', href: '/dashboard/appointments', icon: Calendar },
   { name: 'Patients', href: '/dashboard/patients', icon: Users },
+  { name: 'Services', href: '/dashboard/services', icon: Briefcase },
   { name: 'Facturation', href: '/dashboard/billing', icon: CreditCard },
+  { name: 'Support', href: '/dashboard/support', icon: LifeBuoy },
   { name: 'Paramètres', href: '/dashboard/settings', icon: Settings },
 ];
 
@@ -46,6 +51,17 @@ export default function DashboardLayout() {
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  const bookingUrl = dentist?.bookingPageId 
+    ? `${window.location.origin}/dentist/${dentist.bookingPageId}`
+    : '';
+
+  const handleCopyBookingLink = () => {
+    if (bookingUrl) {
+      navigator.clipboard.writeText(bookingUrl);
+      // You can add a toast notification here if needed
+    }
   };
 
   return (
@@ -126,6 +142,15 @@ export default function DashboardLayout() {
                   </p>
                   <p className="text-[10px] text-gray-500 truncate">{user?.email}</p>
                 </div>
+                {bookingUrl && (
+                  <button
+                    onClick={handleCopyBookingLink}
+                    className="p-2 hover:bg-teal-50 rounded-lg transition-all duration-200 group border border-teal-200 hover:border-teal-400"
+                    title="Copier le lien de réservation"
+                  >
+                    <LinkIcon className="h-4 w-4 text-teal-600 group-hover:text-teal-700" />
+                  </button>
+                )}
               </div>
               <Button
                 variant="ghost"

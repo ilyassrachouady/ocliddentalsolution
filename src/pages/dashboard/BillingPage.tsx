@@ -1,20 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { api } from '@/lib/api';
-import { format } from 'date-fns';
-import { fr } from 'date-fns/locale/fr';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
 import {
   Select,
   SelectContent,
@@ -22,14 +8,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
 import {
@@ -37,51 +18,13 @@ import {
   Plus,
   FileText,
   DollarSign,
-  TrendingUp,
-  Download,
-  Send,
-  Eye,
-  Calculator,
-  Shield,
-  Heart,
-  Banknote,
   Receipt,
-  PieChart,
   BarChart3,
   Euro,
-  CheckCircle2,
   Clock,
-  AlertCircle,
-  Search,
-  Filter,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import NewInvoiceForm from '@/components/NewInvoiceForm';
-
-interface Invoice {
-  id: string;
-  patientId: string;
-  patientName: string;
-  treatmentId: string;
-  treatmentName: string;
-  amount: number;
-  tax: number;
-  total: number;
-  status: 'draft' | 'sent' | 'paid' | 'overdue';
-  createdAt: Date;
-  dueDate: Date;
-  paidAt?: Date;
-}
-
-interface Insurance {
-  id: string;
-  patientId: string;
-  provider: string;
-  policyNumber: string;
-  coverage: number; // percentage
-  maxAmount: number;
-  status: 'active' | 'expired' | 'pending';
-}
+import { toast } from 'sonner';
 
 interface FinancialReport {
   period: string;
@@ -94,13 +37,12 @@ interface FinancialReport {
 }
 
 export default function BillingPage() {
-  const { user, dentist } = useAuth();
-  const [invoices, setInvoices] = useState<Invoice[]>([]);
-  const [insurance, setInsurance] = useState<Insurance[]>([]);
   const [reports, setReports] = useState<FinancialReport[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [showInvoiceDialog, setShowInvoiceDialog] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState('month');
+  const [selectedMonth, setSelectedMonth] = useState('11');
+  const [selectedYear, setSelectedYear] = useState('2024');
+  const [selectedWeek, setSelectedWeek] = useState('1');
 
   useEffect(() => {
     loadBillingData();
@@ -108,72 +50,6 @@ export default function BillingPage() {
 
   const loadBillingData = async () => {
     try {
-      setIsLoading(true);
-      // Mock data for demo
-      const mockInvoices: Invoice[] = [
-        {
-          id: 'INV-001',
-          patientId: '1',
-          patientName: 'Fatima Alami',
-          treatmentId: 'TR-001',
-          treatmentName: 'Nettoyage dentaire',
-          amount: 800,
-          tax: 160,
-          total: 960,
-          status: 'paid',
-          createdAt: new Date('2024-01-15'),
-          dueDate: new Date('2024-02-15'),
-          paidAt: new Date('2024-01-20'),
-        },
-        {
-          id: 'INV-002',
-          patientId: '2',
-          patientName: 'Ahmed Benali',
-          treatmentId: 'TR-002',
-          treatmentName: 'Couronne dentaire',
-          amount: 3500,
-          tax: 700,
-          total: 4200,
-          status: 'sent',
-          createdAt: new Date('2024-01-20'),
-          dueDate: new Date('2024-02-20'),
-        },
-        {
-          id: 'INV-003',
-          patientId: '3',
-          patientName: 'Sarah Cohen',
-          treatmentId: 'TR-003',
-          treatmentName: 'Implant dentaire',
-          amount: 8000,
-          tax: 1600,
-          total: 9600,
-          status: 'overdue',
-          createdAt: new Date('2024-01-10'),
-          dueDate: new Date('2024-01-25'),
-        },
-      ];
-
-      const mockInsurance: Insurance[] = [
-        {
-          id: 'INS-001',
-          patientId: '1',
-          provider: 'CNSS',
-          policyNumber: 'POL-123456',
-          coverage: 70,
-          maxAmount: 5000,
-          status: 'active',
-        },
-        {
-          id: 'INS-002',
-          patientId: '2',
-          provider: 'Mutuelle Générale',
-          policyNumber: 'MUT-789012',
-          coverage: 80,
-          maxAmount: 8000,
-          status: 'active',
-        },
-      ];
-
       const mockReports: FinancialReport[] = [
         {
           period: 'Janvier 2024',
@@ -186,51 +62,50 @@ export default function BillingPage() {
         },
       ];
 
-      setInvoices(mockInvoices);
-      setInsurance(mockInsurance);
       setReports(mockReports);
     } catch (error) {
       console.error('Error loading billing data:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
-  const getStatusBadge = (status: string) => {
-    const statusConfig: Record<string, { icon: React.ReactNode; label: string; className: string }> = {
-      paid: {
-        icon: <CheckCircle2 className="h-3 w-3" />,
-        label: 'Payé',
-        className: 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg border-0 rounded-full px-3 py-1 font-semibold'
-      },
-      sent: {
-        icon: <Clock className="h-3 w-3" />,
-        label: 'Envoyé',
-        className: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg border-0 rounded-full px-3 py-1 font-semibold'
-      },
-      draft: {
-        icon: <FileText className="h-3 w-3" />,
-        label: 'Brouillon',
-        className: 'bg-gradient-to-r from-slate-400 to-slate-500 text-white shadow-lg border-0 rounded-full px-3 py-1 font-semibold'
-      },
-      overdue: {
-        icon: <AlertCircle className="h-3 w-3" />,
-        label: 'En retard',
-        className: 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg border-0 rounded-full px-3 py-1 font-semibold'
-      },
-    };
-    
-    const config = statusConfig[status] || statusConfig.draft;
-    
-    return (
-      <Badge className={config.className}>
-        <div className="flex items-center gap-1">
-          {config.icon}
-          {config.label}
-        </div>
-      </Badge>
-    );
+  const getChartData = () => {
+    if (selectedPeriod === 'week') {
+      return [
+        { label: 'Lun', value: 3200 },
+        { label: 'Mar', value: 4100 },
+        { label: 'Mer', value: 2800 },
+        { label: 'Jeu', value: 5200 },
+        { label: 'Ven', value: 4800 },
+        { label: 'Sam', value: 6500 },
+        { label: 'Dim', value: 1200 },
+      ];
+    } else if (selectedPeriod === 'month') {
+      return [
+        { label: 'Sem 1', value: 12000 },
+        { label: 'Sem 2', value: 15200 },
+        { label: 'Sem 3', value: 11800 },
+        { label: 'Sem 4', value: 16600 },
+      ];
+    } else {
+      return [
+        { label: 'Jan', value: 45600 },
+        { label: 'Fév', value: 38200 },
+        { label: 'Mar', value: 52100 },
+        { label: 'Avr', value: 48900 },
+        { label: 'Mai', value: 56300 },
+        { label: 'Juin', value: 51200 },
+        { label: 'Juil', value: 44800 },
+        { label: 'Août', value: 39500 },
+        { label: 'Sep', value: 49200 },
+        { label: 'Oct', value: 53800 },
+        { label: 'Nov', value: 47600 },
+        { label: 'Déc', value: 50100 },
+      ];
+    }
   };
+
+  const chartData = getChartData();
+  const maxValue = Math.max(...chartData.map(d => d.value));
 
   return (
     <div className="space-y-6">
@@ -277,9 +152,8 @@ export default function BillingPage() {
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-6xl border-0 shadow-2xl rounded-xl md:rounded-2xl lg:rounded-3xl p-0">
                   <NewInvoiceForm 
-                    onSuccess={(invoice) => {
+                    onSuccess={() => {
                       setShowInvoiceDialog(false);
-                      setInvoices(prev => [invoice, ...prev]);
                       toast.success('Facture créée avec succès!');
                     }}
                     onCancel={() => setShowInvoiceDialog(false)}
@@ -345,106 +219,8 @@ export default function BillingPage() {
         </Card>
       </div>
 
-      {/* Tabs Section */}
-      <Tabs defaultValue="invoices" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 bg-white/90 backdrop-blur-sm rounded-2xl p-2 shadow-lg border border-slate-200/50 h-14">
-          <TabsTrigger
-            value="invoices"
-            className="rounded-xl font-bold text-base h-10 px-4 transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-slate-50 text-slate-700"
-          >
-            <FileText className="h-4 w-4 mr-2" />
-            Factures
-          </TabsTrigger>
-          <TabsTrigger
-            value="reports"
-            className="rounded-xl font-bold text-base h-10 px-4 transition-all duration-300 data-[state=active]:bg-gradient-to-r data-[state=active]:from-teal-500 data-[state=active]:to-blue-600 data-[state=active]:text-white data-[state=active]:shadow-lg hover:bg-slate-50 text-slate-700"
-          >
-            <BarChart3 className="h-4 w-4 mr-2" />
-            Rapports
-          </TabsTrigger>
-        </TabsList>
-
-        {/* Invoices Tab */}
-        <TabsContent value="invoices" className="space-y-6">
-          <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 p-6">
-              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
-                <div className="space-y-2">
-                  <CardTitle className="text-2xl font-bold text-slate-900 flex items-center gap-3">
-                    <div className="w-8 h-8 bg-gradient-to-br from-teal-500 to-blue-600 rounded-xl flex items-center justify-center">
-                      <FileText className="h-5 w-5 text-white" />
-                    </div>
-                    Gestion des factures
-                  </CardTitle>
-                  <CardDescription className="text-slate-600 text-lg">
-                    {invoices.length} factures générées ce mois
-                  </CardDescription>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="space-y-4">
-                {invoices.map((invoice) => (
-                  <Card
-                    key={invoice.id}
-                    className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden group bg-gradient-to-r from-white to-slate-50/30"
-                  >
-                    <CardContent className="p-6">
-                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-4 mb-4">
-                            <div className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-teal-600 text-white px-4 py-2 rounded-full font-semibold shadow-lg">
-                              <Receipt className="h-4 w-4" />
-                              {invoice.id}
-                            </div>
-                            {getStatusBadge(invoice.status)}
-                          </div>
-                          
-                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div>
-                              <p className="text-sm text-slate-600 font-medium">Patient</p>
-                              <p className="font-bold text-slate-900">{invoice.patientName}</p>
-                            </div>
-                            <div>
-                              <p className="text-sm text-slate-600 font-medium">Traitement</p>
-                              <p className="font-bold text-slate-900">{invoice.treatmentName}</p>
-                            </div>
-                            <div>
-                              <p className="text-sm text-slate-600 font-medium">Montant total</p>
-                              <p className="font-bold text-slate-900 text-xl">{invoice.total} MAD</p>
-                            </div>
-                          </div>
-                        </div>
-                        
-                        <div className="flex flex-col gap-3">
-                          <div className="flex gap-2">
-                            <Button size="sm" variant="outline" className="rounded-2xl">
-                              <Eye className="h-4 w-4 mr-2" />
-                              Voir
-                            </Button>
-                            <Button size="sm" variant="outline" className="rounded-2xl">
-                              <Download className="h-4 w-4 mr-2" />
-                              PDF
-                            </Button>
-                            {invoice.status !== 'paid' && (
-                              <Button size="sm" className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 rounded-2xl">
-                                <Send className="h-4 w-4 mr-2" />
-                                Envoyer
-                              </Button>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Reports Tab */}
-        <TabsContent value="reports" className="space-y-4">
+      {/* Reports Section */}
+      <div className="space-y-4">
           <Card className="border-0 shadow-xl bg-white rounded-3xl overflow-hidden">
             <CardHeader className="bg-gradient-to-r from-slate-50 via-orange-50/30 to-yellow-50/20 p-6">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -459,23 +235,73 @@ export default function BillingPage() {
                     Aperçu détaillé des performances financières.
                   </CardDescription>
                 </div>
-                <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
-                  <SelectTrigger className="w-full sm:w-[180px] rounded-2xl h-12 text-base">
-                    <SelectValue placeholder="Choisir période" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="week">Semaine</SelectItem>
-                    <SelectItem value="month">Mois</SelectItem>
-                    <SelectItem value="year">Année</SelectItem>
-                  </SelectContent>
-                </Select>
+                <div className="flex flex-wrap gap-3">
+                  <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+                    <SelectTrigger className="w-full sm:w-[140px] rounded-2xl h-12 text-base">
+                      <SelectValue placeholder="Période" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="week">Semaine</SelectItem>
+                      <SelectItem value="month">Mois</SelectItem>
+                      <SelectItem value="year">Année</SelectItem>
+                    </SelectContent>
+                  </Select>
+
+                  {selectedPeriod === 'week' && (
+                    <Select value={selectedWeek} onValueChange={setSelectedWeek}>
+                      <SelectTrigger className="w-full sm:w-[140px] rounded-2xl h-12 text-base">
+                        <SelectValue placeholder="Semaine" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1">Semaine 1</SelectItem>
+                        <SelectItem value="2">Semaine 2</SelectItem>
+                        <SelectItem value="3">Semaine 3</SelectItem>
+                        <SelectItem value="4">Semaine 4</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+
+                  {selectedPeriod === 'month' && (
+                    <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+                      <SelectTrigger className="w-full sm:w-[140px] rounded-2xl h-12 text-base">
+                        <SelectValue placeholder="Mois" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1">Janvier</SelectItem>
+                        <SelectItem value="2">Février</SelectItem>
+                        <SelectItem value="3">Mars</SelectItem>
+                        <SelectItem value="4">Avril</SelectItem>
+                        <SelectItem value="5">Mai</SelectItem>
+                        <SelectItem value="6">Juin</SelectItem>
+                        <SelectItem value="7">Juillet</SelectItem>
+                        <SelectItem value="8">Août</SelectItem>
+                        <SelectItem value="9">Septembre</SelectItem>
+                        <SelectItem value="10">Octobre</SelectItem>
+                        <SelectItem value="11">Novembre</SelectItem>
+                        <SelectItem value="12">Décembre</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  )}
+
+                  <Select value={selectedYear} onValueChange={setSelectedYear}>
+                    <SelectTrigger className="w-full sm:w-[120px] rounded-2xl h-12 text-base">
+                      <SelectValue placeholder="Année" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="2022">2022</SelectItem>
+                      <SelectItem value="2023">2023</SelectItem>
+                      <SelectItem value="2024">2024</SelectItem>
+                      <SelectItem value="2025">2025</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </CardHeader>
             <CardContent className="p-6">
               {reports.map((report, index) => (
-                <div key={index} className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  {/* Left Column: Key Metrics */}
-                  <div className="lg:col-span-1 space-y-6">
+                <div key={index} className="space-y-6">
+                  {/* Top Row: Key Metrics */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                     <Card className="border-0 shadow-lg bg-gradient-to-br from-white to-blue-50/30 rounded-2xl">
                       <CardHeader className="flex flex-row items-center justify-between pb-2">
                         <CardTitle className="text-lg font-bold">Bénéfice Net</CardTitle>
@@ -490,74 +316,73 @@ export default function BillingPage() {
                         </p>
                       </CardContent>
                     </Card>
+
                     <Card className="border-0 shadow-lg bg-white rounded-2xl">
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold text-slate-700">Revenus</span>
-                          <span className="font-bold text-green-600">
-                            {report.revenue.toLocaleString()} MAD
-                          </span>
-                        </div>
-                        <hr className="my-3" />
-                        <div className="flex items-center justify-between">
-                          <span className="font-semibold text-slate-700">Dépenses</span>
-                          <span className="font-bold text-red-600">
-                            {report.expenses.toLocaleString()} MAD
-                          </span>
-                        </div>
+                      <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-base font-bold">Factures</CardTitle>
+                        <FileText className="h-4 w-4 text-slate-500" />
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-2xl font-bold">{report.invoiceCount} émises</p>
+                        <p className="text-sm text-slate-500">
+                          {report.paidInvoices} payées
+                        </p>
+                      </CardContent>
+                    </Card>
+
+                    <Card className="border-0 shadow-lg bg-white rounded-2xl">
+                      <CardHeader className="flex flex-row items-center justify-between pb-2">
+                        <CardTitle className="text-base font-bold">Montant en Attente</CardTitle>
+                        <Clock className="h-4 w-4 text-slate-500" />
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-2xl font-bold">
+                          {report.pendingAmount.toLocaleString()} MAD
+                        </p>
+                        <p className="text-sm text-slate-500">
+                          {report.invoiceCount - report.paidInvoices} factures
+                        </p>
                       </CardContent>
                     </Card>
                   </div>
 
-                  {/* Right Column: Details */}
-                  <div className="lg:col-span-2 space-y-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      <Card className="border-0 shadow-lg bg-white rounded-2xl">
-                        <CardHeader className="flex flex-row items-center justify-between pb-2">
-                          <CardTitle className="text-base font-bold">Factures</CardTitle>
-                          <FileText className="h-4 w-4 text-slate-500" />
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-2xl font-bold">{report.invoiceCount} émises</p>
-                          <p className="text-sm text-slate-500">
-                            {report.paidInvoices} payées
-                          </p>
-                        </CardContent>
-                      </Card>
-                      <Card className="border-0 shadow-lg bg-white rounded-2xl">
-                        <CardHeader className="flex flex-row items-center justify-between pb-2">
-                          <CardTitle className="text-base font-bold">Montant en Attente</CardTitle>
-                          <Clock className="h-4 w-4 text-slate-500" />
-                        </CardHeader>
-                        <CardContent>
-                          <p className="text-2xl font-bold">
-                            {report.pendingAmount.toLocaleString()} MAD
-                          </p>
-                          <p className="text-sm text-slate-500">
-                            {report.invoiceCount - report.paidInvoices} factures
-                          </p>
-                        </CardContent>
-                      </Card>
-                    </div>
-                    <Card className="border-0 shadow-lg bg-white rounded-2xl">
-                      <CardHeader>
-                        <CardTitle className="text-base font-bold">Répartition des revenus</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        {/* Placeholder for a chart */}
-                        <div className="h-48 flex items-center justify-center bg-slate-50 rounded-xl">
-                          <BarChart3 className="h-12 w-12 text-slate-300" />
-                          <span className="ml-4 text-slate-400">Graphique à venir</span>
+                  {/* Full Width Chart */}
+                  <Card className="border-0 shadow-lg bg-white rounded-2xl">
+                    <CardHeader>
+                      <CardTitle className="text-lg font-bold">
+                        Répartition des revenus - {selectedPeriod === 'week' ? 'Par jour' : selectedPeriod === 'month' ? 'Par semaine' : 'Par mois'}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="h-72">
+                        <div className="flex items-end justify-between h-full gap-2 px-4">
+                          {chartData.map((item, index) => {
+                            const height = (item.value / maxValue) * 100;
+                            return (
+                              <div key={index} className="flex flex-col items-center gap-2 flex-1">
+                                <div className="text-xs font-semibold text-slate-600">
+                                  {item.value.toLocaleString()}
+                                </div>
+                                <div 
+                                  className="w-full bg-gradient-to-t from-teal-500 to-teal-400 rounded-t-lg hover:from-teal-600 hover:to-teal-500 transition-all duration-300 cursor-pointer shadow-md"
+                                  style={{ height: `${height}%` }}
+                                  title={`${item.label}: ${item.value.toLocaleString()} MAD`}
+                                ></div>
+                                <div className="text-sm font-medium text-slate-700">
+                                  {item.label}
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
-                      </CardContent>
-                    </Card>
-                  </div>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </div>
               ))}
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
+      </div>
     </div>
   );
 }

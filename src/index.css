@@ -128,8 +128,15 @@ html {
 }
 
 /* Smooth Transitions */
-* {
+*:not([role="listbox"]):not([data-radix-select-content]) {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Désactiver seulement les animations pour les dropdowns Radix */
+[data-radix-select-content],
+[data-radix-popper-content-wrapper] {
+  animation: none !important;
+  transition: none !important;
 }
 
 @layer base {

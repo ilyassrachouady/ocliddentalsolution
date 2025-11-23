@@ -105,6 +105,7 @@ export default function QuizStyleBooking({
     } else {
       setAvailableSlots([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedDate, booking.service]);
 
   const loadTimeSlots = async () => {
@@ -145,8 +146,8 @@ export default function QuizStyleBooking({
       });
       
       setAvailableSlots(timeSlots);
-    } catch (error) {
-      console.error('Error loading time slots:', error);
+    } catch (err) {
+      console.error('Error loading time slots:', err);
       setAvailableSlots([]);
       toast.error('Erreur lors du chargement des créneaux');
     } finally {
@@ -223,7 +224,8 @@ export default function QuizStyleBooking({
       if (onSuccess) {
         onSuccess(finalBooking);
       }
-    } catch (error) {
+    } catch (err) {
+      console.error('Error submitting booking:', err);
       toast.error('Erreur lors de la réservation');
     } finally {
       setIsLoading(false);
@@ -377,7 +379,7 @@ export default function QuizStyleBooking({
                       saveInfo: booking.saveInfo,
                       appointmentId: null,
                     });
-                  } catch (err) {
+                  } catch {
                     toast.error('Erreur lors de l\'annulation');
                   }
                 }}
@@ -393,30 +395,30 @@ export default function QuizStyleBooking({
   }
 
   return (
-    <div className={cn("w-full max-w-7xl mx-auto px-4", className)}>
-      <Card className="border-0 shadow-2xl bg-white overflow-hidden">
+    <div className={cn("w-full h-full flex flex-col", className)}>
+      <div className="flex flex-col h-full overflow-hidden bg-white rounded-lg shadow-sm">
         {/* Compact Progress Header */}
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
-          <div className="flex items-center justify-between">
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 flex-shrink-0">
+          <div className="flex items-center justify-between gap-2">
             {/* Progress Steps */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-1.5 sm:space-x-2 md:space-x-3">
               {STEPS.map((step, index) => (
                 <div key={step.id} className="flex items-center">
                   <div className={cn(
-                    "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all",
+                    "w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium transition-all",
                     index + 1 < currentStep ? "bg-white text-teal-600" :
                     index + 1 === currentStep ? "bg-white text-teal-600" :
                     "bg-teal-500 text-teal-100"
                   )}>
                     {index + 1 < currentStep ? (
-                      <Check className="w-4 h-4" />
+                      <Check className="w-3 h-3 sm:w-4 sm:h-4" />
                     ) : (
                       index + 1
                     )}
                   </div>
                   {index < STEPS.length - 1 && (
                     <div className={cn(
-                      "w-12 h-0.5 mx-3",
+                      "w-4 sm:w-6 md:w-8 lg:w-12 h-0.5 mx-1 sm:mx-1.5 md:mx-2",
                       index + 1 < currentStep ? "bg-white" : "bg-teal-400"
                     )} />
                   )}
@@ -425,46 +427,47 @@ export default function QuizStyleBooking({
             </div>
             
             {/* Step Title */}
-            <div className="text-right">
-              <div className="text-blue-100 text-sm">{currentStepData.name}</div>
-              <h1 className="text-xl font-bold text-white">{currentStepData.title}</h1>
+            <div className="text-right hidden md:block">
+              <div className="text-blue-100 text-xs lg:text-sm">{currentStepData.name}</div>
+              <h1 className="text-sm lg:text-base xl:text-lg font-bold text-white">{currentStepData.title}</h1>
             </div>
           </div>
         </div>
 
-        {/* Single Rectangle Content Area */}
-        <CardContent className="p-6">
+        {/* Content Area */}
+        <div className="flex-1 overflow-y-auto bg-white">
+          <div className="p-3 sm:p-4 md:p-6">
           {/* Step 1: Service Selection */}
           {currentStep === 1 && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4">
               {dentist.services.map((service: Service) => (
                 <button
                   key={service.id}
                   onClick={() => handleServiceSelect(service)}
                   className={cn(
-                    "p-4 rounded-xl border-2 text-left transition-all hover:shadow-md h-full flex flex-col",
+                    "p-2 sm:p-3 md:p-4 rounded-lg md:rounded-xl border-2 text-left transition-all hover:shadow-md h-full flex flex-col",
                     booking.service?.id === service.id
                       ? "border-blue-500 bg-blue-50 shadow-md ring-1 ring-blue-200"
                       : "border-gray-200 hover:border-gray-300 bg-white"
                   )}
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="font-semibold text-gray-900">{service.name}</div>
+                  <div className="flex items-start justify-between mb-1.5 sm:mb-2 md:mb-3">
+                    <div className="font-semibold text-xs sm:text-sm md:text-base text-gray-900">{service.name}</div>
                     {service.id === 's1' && (
-                      <Badge className="bg-orange-100 text-orange-700 text-xs">
-                        <Star className="w-3 h-3 mr-1" />
+                      <Badge className="bg-orange-100 text-orange-700 text-[10px] sm:text-xs">
+                        <Star className="w-2 h-2 sm:w-3 sm:h-3 mr-0.5 sm:mr-1" />
                         Top
                       </Badge>
                     )}
                   </div>
                   
                   {service.description && (
-                    <div className="text-sm text-gray-600 mb-4 flex-grow line-clamp-2">{service.description}</div>
+                    <div className="text-[10px] sm:text-xs md:text-sm text-gray-600 mb-2 sm:mb-3 md:mb-4 flex-grow line-clamp-2">{service.description}</div>
                   )}
                   
-                  <div className="mt-auto space-y-2">
+                  <div className="mt-auto space-y-1 sm:space-y-2">
                     <div className="flex items-center justify-end">
-                      <div className="font-bold text-blue-600">{service.price} MAD</div>
+                      <div className="font-bold text-xs sm:text-sm md:text-base text-blue-600">{service.price} MAD</div>
                     </div>
 
                     {booking.service?.id === service.id && (
@@ -481,17 +484,17 @@ export default function QuizStyleBooking({
 
           {/* Step 2: Date & Time Selection */}
           {currentStep === 2 && (
-            <div className="h-[60vh] overflow-auto">
+            <div className="space-y-4">
               {booking.service && (
-                <div className="mb-4 flex items-center justify-center">
-                  <div className="inline-flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full">
-                    <Stethoscope className="w-4 h-4 text-blue-600" />
-                    <span className="text-blue-800 font-medium">{booking.service.name}</span>
+                <div className="flex items-center justify-center">
+                  <div className="inline-flex items-center gap-2 bg-blue-50 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full">
+                    <Stethoscope className="w-3 h-3 sm:w-4 sm:h-4 text-blue-600" />
+                    <span className="text-xs sm:text-sm text-blue-800 font-medium">{booking.service.name}</span>
                   </div>
                 </div>
               )}
 
-              <div className="w-full">
+              <div className="w-full max-w-5xl mx-auto">
                 <CalendarScheduler
                   timeSlots={availableSlots.map(s => s.time)}
                   disabledDates={(date) => {
@@ -513,10 +516,10 @@ export default function QuizStyleBooking({
               </div>
 
               {booking.date && booking.timeSlot && (
-                <div className="mt-4 text-center">
-                  <div className="inline-flex items-center gap-2 bg-green-50 px-6 py-3 rounded-full border-2 border-green-200">
-                    <Check className="w-5 h-5 text-green-600" />
-                    <span className="text-green-800 font-medium">
+                <div className="text-center">
+                  <div className="inline-flex items-center gap-2 bg-green-50 px-4 sm:px-6 py-2 sm:py-3 rounded-full border-2 border-green-200">
+                    <Check className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+                    <span className="text-xs sm:text-sm text-green-800 font-medium">
                       {format(booking.date, 'EEEE d MMMM', { locale: fr })} à {booking.timeSlot.time}
                     </span>
                   </div>
@@ -527,7 +530,7 @@ export default function QuizStyleBooking({
 
           {/* Step 3: Patient Details */}
           {currentStep === 3 && (
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[60vh]">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
               {/* Form Column */}
               <div className="lg:col-span-2 space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -724,50 +727,51 @@ export default function QuizStyleBooking({
               </Button>
             </div>
           )}
-        </CardContent>
+        </div>
+        </div>
 
         {/* Navigation Footer */}
         {currentStep < 4 && (
-          <div className="border-t-0 bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 px-8 py-6 rounded-b-3xl">
-            <div className="flex justify-between items-center">
+          <div className="border-t bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 flex-shrink-0">
+            <div className="flex justify-between items-center gap-2">
               <Button
                 onClick={handleBack}
                 variant="outline"
-                className="rounded-2xl h-12 px-8 bg-white/80 backdrop-blur-sm hover:bg-white border-0 shadow-lg hover:shadow-xl transition-all font-semibold"
+                className="rounded-lg sm:rounded-xl h-8 sm:h-10 px-3 sm:px-4 md:px-6 bg-white/80 backdrop-blur-sm hover:bg-white border-0 shadow-md hover:shadow-lg transition-all font-semibold text-xs sm:text-sm"
                 disabled={currentStep === 1}
               >
-                <ArrowLeft className="w-5 w-5 mr-3" />
+                <ArrowLeft className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
                 Retour
               </Button>
 
               <Button
                 onClick={handleNext}
                 disabled={!canProceedToNext()}
-                className="rounded-2xl h-12 px-8 bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 shadow-lg hover:shadow-xl transition-all transform hover:scale-105 font-bold text-lg"
+                className="rounded-lg sm:rounded-xl h-8 sm:h-10 px-3 sm:px-4 md:px-6 bg-gradient-to-r from-teal-500 to-blue-600 hover:from-teal-600 hover:to-blue-700 shadow-md hover:shadow-lg transition-all transform hover:scale-105 font-bold text-xs sm:text-sm"
               >
                 {currentStep === 1 && 'Continuer'}
                 {currentStep === 2 && 'Continuer'}
                 {currentStep === 3 && 'Vers la confirmation'}
-                <ArrowRight className="w-5 h-5 ml-3" />
+                <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 ml-1 sm:ml-2" />
               </Button>
             </div>
           </div>
         )}
         
         {currentStep === 4 && onCancel && (
-          <div className="border-t-0 bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 px-8 py-6 rounded-b-3xl">
+          <div className="border-t bg-gradient-to-r from-slate-50 via-blue-50/30 to-teal-50/20 px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4 flex-shrink-0">
             <div className="flex justify-center">
               <Button
                 onClick={onCancel}
                 variant="outline"
-                className="rounded-2xl h-12 px-8 bg-white/80 backdrop-blur-sm hover:bg-white border-0 shadow-lg hover:shadow-xl transition-all font-semibold"
+                className="rounded-lg sm:rounded-xl h-8 sm:h-10 px-3 sm:px-4 md:px-6 bg-white/80 backdrop-blur-sm hover:bg-white border-0 shadow-md hover:shadow-lg transition-all font-semibold text-xs sm:text-sm"
               >
                 Annuler
               </Button>
             </div>
           </div>
         )}
-      </Card>
+      </div>
     </div>
   );
 }
