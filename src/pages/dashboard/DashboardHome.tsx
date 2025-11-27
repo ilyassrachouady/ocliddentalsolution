@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { api } from '@/lib/api';
 import { Appointment, Patient } from '@/types';
@@ -28,9 +27,10 @@ import {
   Shield,
 } from 'lucide-react';
 import { ModernAppointmentModalV2 } from '@/components/ui/modern-appointment-modal-v2';
+import { demoDentist } from '@/lib/mock-data';
 
 export default function DashboardHome() {
-  const { dentist } = useAuth();
+  const [dentist] = useState(demoDentist);
   const navigate = useNavigate();
   const [patients, setPatients] = useState<Patient[]>([]);
   const [isLoading, setIsLoading] = useState(true);
