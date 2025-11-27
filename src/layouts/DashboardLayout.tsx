@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -33,7 +32,7 @@ import {
 import { cn } from '@/lib/utils';
 
 const navigation = [
-  { name: 'Tableau de bord', href: '/dashboard', icon: LayoutDashboard },
+  { name: 'Tableau de bord', href: '/', icon: LayoutDashboard },
   { name: 'Rendez-vous', href: '/dashboard/appointments', icon: Calendar },
   { name: 'Patients', href: '/dashboard/patients', icon: Users },
   { name: 'Services', href: '/dashboard/services', icon: Briefcase },
@@ -42,16 +41,14 @@ const navigation = [
   { name: 'Paramètres', href: '/dashboard/settings', icon: Settings },
 ];
 
+// Mock data to replace useAuth
+const user = { name: 'Demo User', email: 'demo@ocliq.ma' };
+const dentist = { name: 'Dr. Demo', photo: undefined, bookingPageId: 'demo-booking-page' };
+const isDemo = true;
+
 export default function DashboardLayout() {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { user, dentist, logout, isDemo } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
 
   const bookingUrl = dentist?.bookingPageId 
     ? `${window.location.origin}/dentist/${dentist.bookingPageId}`
@@ -152,14 +149,6 @@ export default function DashboardLayout() {
                   </button>
                 )}
               </div>
-              <Button
-                variant="ghost"
-                className="w-full justify-start gap-2 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-gray-900 h-9 text-xs"
-                onClick={handleLogout}
-              >
-                <LogOut className="h-3 w-3" />
-                <span>Déconnexion</span>
-              </Button>
             </div>
           </div>
         </div>
@@ -215,19 +204,6 @@ export default function DashboardLayout() {
                   );
                 })}
               </ul>
-              <div className="mt-auto pt-4 border-t border-gray-200">
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start gap-2 rounded-xl text-gray-700 hover:bg-gray-50 hover:text-gray-900"
-                  onClick={() => {
-                    handleLogout();
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  <LogOut className="h-4 w-4" />
-                  <span>Déconnexion</span>
-                </Button>
-              </div>
             </nav>
           </SheetContent>
         </Sheet>
@@ -252,11 +228,6 @@ export default function DashboardLayout() {
                 <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Déconnexion</span>
-            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -270,4 +241,3 @@ export default function DashboardLayout() {
     </div>
   );
 }
-
