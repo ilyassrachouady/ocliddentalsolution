@@ -1,7 +1,6 @@
 import { Eye, Users, TrendingUp, Clock, Phone, Mail, Stethoscope } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { api } from '@/lib/api';
 import { Appointment, Patient, AppointmentStatus } from '@/types';
 import { format, isToday, isPast, isFuture, startOfMonth, endOfMonth, eachDayOfInterval, getDay, addDays, isSameDay, isBefore } from 'date-fns';
@@ -20,6 +19,7 @@ import { ModernAppointmentModalV2 } from '@/components/ui/modern-appointment-mod
 import { toast } from 'sonner';
 import { Plus, Calendar as CalendarIcon, ChevronLeft, ChevronRight, Filter, List, CheckCircle2, XCircle, Timer } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { demoDentist } from '@/lib/mock-data';
 
 type FilterType = 'all' | 'today' | 'upcoming' | 'past';
 
@@ -159,7 +159,7 @@ function ModernCalendar({ appointments, onDateSelect, selectedDate }: ModernCale
 
 export default function AppointmentsPage() {
   const navigate = useNavigate();
-  const { dentist } = useAuth();
+  const [dentist] = useState(demoDentist);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [patients, setPatients] = useState<Patient[]>([]);
   const [filteredAppointments, setFilteredAppointments] = useState<Appointment[]>([]);

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 import { api } from '@/lib/api';
 import { Patient } from '@/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,9 +15,10 @@ import {
   Dialog,
   DialogContent,
 } from '@/components/ui/dialog';
+import { demoDentist } from '@/lib/mock-data';
 
 export default function PatientsPage() {
-  const { dentist } = useAuth();
+  const [dentist] = useState(demoDentist);
   const navigate = useNavigate();
   const [patients, setPatients] = useState<Patient[]>([]);
   const [filteredPatients, setFilteredPatients] = useState<Patient[]>([]);

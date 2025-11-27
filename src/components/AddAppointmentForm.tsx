@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { api } from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,6 +18,7 @@ import { fr } from 'date-fns/locale/fr';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { demoDentist } from '@/lib/mock-data';
 
 interface AddAppointmentFormProps {
   dentistId: string;
@@ -26,7 +26,7 @@ interface AddAppointmentFormProps {
 }
 
 export function AddAppointmentForm({ dentistId, onSuccess }: AddAppointmentFormProps) {
-  const { dentist } = useAuth();
+  const [dentist] = useState(demoDentist);
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [time, setTime] = useState('');
   const [serviceId, setServiceId] = useState('');
@@ -236,4 +236,3 @@ export function AddAppointmentForm({ dentistId, onSuccess }: AddAppointmentFormP
     </form>
   );
 }
-

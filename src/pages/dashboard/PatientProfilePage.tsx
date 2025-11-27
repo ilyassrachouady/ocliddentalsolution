@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
 import { api } from '@/lib/api';
 import { Patient } from '@/types';
 import { format } from 'date-fns';
@@ -43,11 +42,12 @@ import {
   Timer,
   XCircle,
 } from 'lucide-react';
+import { demoDentist } from '@/lib/mock-data';
 
 export default function PatientProfilePage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { dentist } = useAuth();
+  const [dentist] = useState(demoDentist);
   const [patient, setPatient] = useState<Patient | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
@@ -674,4 +674,3 @@ export default function PatientProfilePage() {
     </div>
   );
 }
-
