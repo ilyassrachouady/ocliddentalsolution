@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { Dentist } from '@/types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -24,6 +23,7 @@ import {
   Calendar,
   Check,
 } from 'lucide-react';
+import { demoDentist } from '@/lib/mock-data';
 
 const days = [
   { key: 'monday', label: 'Lundi' },
@@ -36,7 +36,7 @@ const days = [
 ];
 
 export default function SettingsPage() {
-  const { dentist } = useAuth();
+  const [dentist] = useState<Dentist | null>(demoDentist);
   const [formData, setFormData] = useState<Partial<Dentist>>({});
   const [isSaving, setIsSaving] = useState(false);
   const [bookingUrl, setBookingUrl] = useState('');

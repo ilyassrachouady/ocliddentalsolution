@@ -1,6 +1,5 @@
 import { Plus, Edit, Trash2, Stethoscope, DollarSign } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from 'sonner';
+import { demoDentist } from '@/lib/mock-data';
 
 interface ServiceWithCNSS {
   id: string;
@@ -20,7 +20,7 @@ interface ServiceWithCNSS {
 }
 
 export default function ServicesPage() {
-  const { dentist } = useAuth();
+  const [dentist] = useState(demoDentist);
   const [services, setServices] = useState<ServiceWithCNSS[]>([]);
   const [showAddDialog, setShowAddDialog] = useState(false);
   const [showEditDialog, setShowEditDialog] = useState(false);
