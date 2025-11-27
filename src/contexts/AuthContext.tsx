@@ -22,20 +22,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isDemo, setIsDemo] = useState(false);
 
   useEffect(() => {
-    // Check for stored auth
-    const storedUser = storage.getItem('user');
-    const storedDentist = storage.getItem('dentist');
-    const demo = isDemoMode();
-
-    if (demo) {
-      setUser(demoUser);
-      setDentist(demoDentist);
-      setIsDemo(true);
-    } else if (storedUser && storedDentist) {
-      setUser(storedUser);
-      setDentist(storedDentist);
-    }
-    
+    // Force demo mode by default
+    setUser(demoUser);
+    setDentist(demoDentist);
+    setIsDemo(true);
     setIsLoading(false);
   }, []);
 
@@ -152,4 +142,3 @@ export const useAuth = () => {
   }
   return context;
 };
-
