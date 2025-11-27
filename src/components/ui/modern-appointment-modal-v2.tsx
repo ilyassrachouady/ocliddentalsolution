@@ -227,14 +227,13 @@ export function ModernAppointmentModalV2({
   const handleDateSelect = (date: Date | undefined) => {
     setSelectedDate(date);
     if (date) {
-      setAppointmentData({ ...appointmentData, date });
+      setAppointmentData({ ...appointmentData, date, timeSlot: null });
     }
   };
 
   const handleTimeSlotSelect = (slot: TimeSlot) => {
     if (!slot.isAvailable) return;
     setAppointmentData({ ...appointmentData, timeSlot: slot });
-    setStep(3);
   };
 
   const handleConfirm = async () => {
