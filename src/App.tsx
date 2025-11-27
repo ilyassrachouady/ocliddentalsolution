@@ -8,15 +8,15 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Only show Dashboard as default and only accessible page without login */}
+        {/* Show dashboard home on / and /dashboard */}
         <Route path="/" element={<DashboardLayout />}>
           <Route index element={<DashboardHome />} />
         </Route>
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardHome />} />
         </Route>
-        
-        {/* Redirect all other routes to Dashboard Home */}
+
+        {/* Redirect all other routes to dashboard home */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
       <Toaster />
